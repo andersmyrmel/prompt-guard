@@ -19,7 +19,7 @@
     <img src="https://img.shields.io/bundlephobia/minzip/@andersmyrmel/vard?color=success" alt="Bundle size"/>
   </a>
   <a href="https://www.npmjs.com/package/@andersmyrmel/vard">
-    <img src="https://img.shields.io/npm/v/@andersmyrrel/vard.svg?color=blue" alt="npm version"/>
+    <img src="https://img.shields.io/npm/v/@andersmyrmel/vard.svg?color=blue" alt="npm version"/>
   </a>
 </p>
 
