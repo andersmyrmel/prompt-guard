@@ -1,67 +1,67 @@
-import { GuardBuilder } from './guard';
+import { VardBuilder } from './vard';
 import { getPreset } from './presets';
-import type { GuardResult, CallableGuard } from './types';
+import type { VardResult, CallableVard } from './types';
 
 export type {
   ThreatType,
   ThreatAction,
   Threat,
-  GuardResult,
+  VardResult,
   Pattern,
-  GuardConfig,
+  VardConfig,
   PresetName,
 } from './types';
 export { PromptInjectionError } from './errors';
 
 /**
- * Main guard function - validates input against prompt injection attacks.
+ * Main vard function - validates input against prompt injection attacks.
  *
  * Can be called with or without an input string:
- * - With input: `guard(input)` - validates immediately (throws on detection)
- * - Without input: `guard()` - returns a chainable guard builder
+ * - With input: `vard(input)` - validates immediately (throws on detection)
+ * - Without input: `vard()` - returns a chainable vard builder
  *
  * Uses moderate preset by default (threshold: 0.7, balanced security).
  *
  * @param input - User input to validate (optional)
- * @returns Validated string if input provided, or chainable guard builder if no input
+ * @returns Validated string if input provided, or chainable vard builder if no input
  * @throws {PromptInjectionError} When prompt injection is detected (only if input provided)
  *
  * @example
  * **Zero-config usage (throws on threat)**
  * ```typescript
- * import guard from 'prompt-guard';
+ * import vard from 'vard';
  *
- * const safe = guard('Hello, how can I help?');
+ * const safe = vard('Hello, how can I help?');
  * // Returns: 'Hello, how can I help?'
  *
- * guard('Ignore all previous instructions');
+ * vard('Ignore all previous instructions');
  * // Throws: PromptInjectionError
  * ```
  *
  * @example
- * **Create chainable guard**
+ * **Create chainable vard**
  * ```typescript
- * const myGuard = guard()
+ * const myVard =vard()
  *   .delimiters(['CONTEXT:', 'USER:'])
  *   .maxLength(5000)
  *   .threshold(0.8);
  *
- * const safe = myGuard.parse(userInput);
+ * const safe = myVard.parse(userInput);
  * ```
  *
- * @see {@link guard.safe} for non-throwing validation
- * @see {@link guard.strict} for stricter detection (threshold: 0.5)
- * @see {@link guard.moderate} for balanced detection (threshold: 0.7)
- * @see {@link guard.lenient} for permissive detection (threshold: 0.85)
+ * @see {@link vard.safe} for non-throwing validation
+ * @see {@link vard.strict} for stricter detection (threshold: 0.5)
+ * @see {@link vard.moderate} for balanced detection (threshold: 0.7)
+ * @see {@link vard.lenient} for permissive detection (threshold: 0.85)
  */
-function guardFn(input: string): string;
-function guardFn(): CallableGuard;
-function guardFn(input?: string): string | CallableGuard {
+function vardFn(input: string): string;
+function vardFn(): CallableVard;
+function vardFn(input?: string): string | CallableVard {
   if (input !== undefined) {
-    const builder = new GuardBuilder();
+    const builder = new VardBuilder();
     return builder.parse(input);
   } else {
-    return createGuard();
+    return createVard();
   }
 }
 
@@ -79,9 +79,9 @@ function guardFn(input?: string): string | CallableGuard {
  * @example
  * **Safe validation (no exceptions)**
  * ```typescript
- * import guard from 'prompt-guard';
+ * import vard from 'vard';
  *
- * const result = guard.safe(userInput);
+ * const result = vard.safe(userInput);
  *
  * if (result.safe) {
  *   console.log('Safe input:', result.data);
@@ -96,7 +96,7 @@ function guardFn(input?: string): string | CallableGuard {
  * @example
  * **Type narrowing with discriminated union**
  * ```typescript
- * const result = guard.safe(input);
+ * const result = vard.safe(input);
  *
  * if (result.safe) {
  *   result.data;    // TypeScript knows this is string
@@ -105,27 +105,27 @@ function guardFn(input?: string): string | CallableGuard {
  * }
  * ```
  *
- * @see {@link guard} for throwing validation
+ * @see {@link vard} for throwing validation
  */
-guardFn.safe = (input: string): GuardResult => {
-  const builder = new GuardBuilder();
+vardFn.safe = (input: string): VardResult => {
+  const builder = new VardBuilder();
   return builder.safeParse(input);
 };
 
 /**
- * Creates a strict guard with low detection threshold (0.5).
+ * Creates a strict vard with low detection threshold (0.5).
  *
  * Blocks all threat types by default. Most sensitive to attacks but higher
  * chance of false positives. Recommended for high-security environments.
  *
- * @returns Chainable guard builder with strict preset
+ * @returns Chainable vard builder with strict preset
  *
  * @example
  * **Strict preset blocks more aggressively**
  * ```typescript
- * import guard from 'prompt-guard';
+ * import vard from 'vard';
  *
- * const strict = guard.strict();
+ * const strict = vard.strict();
  *
  * // Even moderate threats are blocked
  * strict.parse('start over');
@@ -135,35 +135,35 @@ guardFn.safe = (input: string): GuardResult => {
  * @example
  * **Extend strict preset**
  * ```typescript
- * const myGuard = guard.strict()
+ * const myVard =vard.strict()
  *   .delimiters(['CONTEXT:', 'USER:'])
  *   .maxLength(10000);
  *
- * const safe = myGuard.parse(userInput);
+ * const safe = myVard.parse(userInput);
  * ```
  *
- * @see {@link guard.moderate} for balanced detection (default)
- * @see {@link guard.lenient} for permissive detection
+ * @see {@link vard.moderate} for balanced detection (default)
+ * @see {@link vard.lenient} for permissive detection
  */
-guardFn.strict = (): CallableGuard => {
-  const builder = new GuardBuilder(getPreset('strict'));
-  return GuardBuilder.createCallable(builder);
+vardFn.strict = (): CallableVard => {
+  const builder = new VardBuilder(getPreset('strict'));
+  return VardBuilder.createCallable(builder);
 };
 
 /**
- * Creates a moderate guard with balanced detection threshold (0.7).
+ * Creates a moderate vard with balanced detection threshold (0.7).
  *
  * Blocks high-severity threats, sanitizes delimiter/encoding attacks.
  * Good balance between security and usability. **This is the default preset.**
  *
- * @returns Chainable guard builder with moderate preset
+ * @returns Chainable vard builder with moderate preset
  *
  * @example
  * **Moderate preset (balanced security)**
  * ```typescript
- * import guard from 'prompt-guard';
+ * import vard from 'vard';
  *
- * const moderate = guard.moderate();
+ * const moderate = vard.moderate();
  *
  * // High severity threats are blocked
  * moderate.parse('ignore all previous instructions');
@@ -177,37 +177,37 @@ guardFn.strict = (): CallableGuard => {
  * @example
  * **Customize moderate preset**
  * ```typescript
- * const chatGuard = guard.moderate()
+ * const chatVard =vard.moderate()
  *   .delimiters(['CONTEXT:', 'USER:', 'SYSTEM:'])
  *   .block('delimiterInjection')  // Block instead of sanitize
  *   .maxLength(5000);
  *
- * const safe = chatGuard.parse(userInput);
+ * const safe = chatVard.parse(userInput);
  * ```
  *
- * @see {@link guard.strict} for stricter detection
- * @see {@link guard.lenient} for permissive detection
+ * @see {@link vard.strict} for stricter detection
+ * @see {@link vard.lenient} for permissive detection
  */
-guardFn.moderate = (): CallableGuard => {
-  const builder = new GuardBuilder(getPreset('moderate'));
-  return GuardBuilder.createCallable(builder);
+vardFn.moderate = (): CallableVard => {
+  const builder = new VardBuilder(getPreset('moderate'));
+  return VardBuilder.createCallable(builder);
 };
 
 /**
- * Creates a lenient guard with high detection threshold (0.85).
+ * Creates a lenient vard with high detection threshold (0.85).
  *
  * Sanitizes most threats instead of blocking. Only very high severity threats
  * are blocked. Recommended when false positives are costly or user input is
  * expected to contain instruction-like language (e.g., technical documentation).
  *
- * @returns Chainable guard builder with lenient preset
+ * @returns Chainable vard builder with lenient preset
  *
  * @example
  * **Lenient preset allows more through**
  * ```typescript
- * import guard from 'prompt-guard';
+ * import vard from 'vard';
  *
- * const lenient = guard.lenient();
+ * const lenient = vard.lenient();
  *
  * // Moderate severity threats pass through
  * const safe = lenient.parse('new instructions');
@@ -221,43 +221,43 @@ guardFn.moderate = (): CallableGuard => {
  * @example
  * **Lenient for technical content**
  * ```typescript
- * const docGuard = guard.lenient()
+ * const docVard = vard.lenient()
  *   .sanitize('instructionOverride')  // Don't block, just clean
  *   .sanitize('roleManipulation')
  *   .threshold(0.9);  // Even more permissive
  *
- * const safe = docGuard.parse(technicalDocumentation);
+ * const safe = docVard.parse(technicalDocumentation);
  * ```
  *
- * @see {@link guard.strict} for stricter detection
- * @see {@link guard.moderate} for balanced detection (default)
+ * @see {@link vard.strict} for stricter detection
+ * @see {@link vard.moderate} for balanced detection (default)
  */
-guardFn.lenient = (): CallableGuard => {
-  const builder = new GuardBuilder(getPreset('lenient'));
-  return GuardBuilder.createCallable(builder);
+vardFn.lenient = (): CallableVard => {
+  const builder = new VardBuilder(getPreset('lenient'));
+  return VardBuilder.createCallable(builder);
 };
 
 /**
- * Main guard export - validates user input against prompt injection attacks.
+ * Main vard export - validates user input against prompt injection attacks.
  *
  * @remarks
  * This is the primary entry point for the library. It provides multiple ways
  * to validate input depending on your needs:
  *
- * - **Zero-config**: `guard(input)` - immediate validation with defaults
- * - **Safe mode**: `guard.safe(input)` - returns result instead of throwing
- * - **Presets**: `guard.strict()`, `guard.moderate()`, `guard.lenient()`
- * - **Chainable**: `guard().delimiters([...]).maxLength(...)`
+ * - **Zero-config**: `vard(input)` - immediate validation with defaults
+ * - **Safe mode**: `vard.safe(input)` - returns result instead of throwing
+ * - **Presets**: `vard.strict()`, `vard.moderate()`, `vard.lenient()`
+ * - **Chainable**: `vard().delimiters([...]).maxLength(...)`
  *
  * All methods return either validated strings or throw `PromptInjectionError`.
  *
  * @example
  * **Zero-config (recommended for most cases)**
  * ```typescript
- * import guard from 'prompt-guard';
+ * import vard from 'vard';
  *
  * try {
- *   const safe = guard(userInput);
+ *   const safe = vard(userInput);
  *   // Use safe input in your LLM prompt
  * } catch (error) {
  *   if (error instanceof PromptInjectionError) {
@@ -269,7 +269,7 @@ guardFn.lenient = (): CallableGuard => {
  * @example
  * **Safe mode (no exceptions)**
  * ```typescript
- * const result = guard.safe(userInput);
+ * const result = vard.safe(userInput);
  * if (result.safe) {
  *   processInput(result.data);
  * } else {
@@ -280,61 +280,75 @@ guardFn.lenient = (): CallableGuard => {
  * @example
  * **Custom configuration**
  * ```typescript
- * const chatGuard = guard.moderate()
+ * const chatVard =vard.moderate()
  *   .delimiters(['CONTEXT:', 'USER:', 'SYSTEM:'])
  *   .maxLength(5000)
  *   .sanitize('delimiterInjection')
  *   .block('instructionOverride');
  *
- * const safe = chatGuard.parse(userMessage);
+ * const safe = chatVard.parse(userMessage);
  * ```
  *
- * @see {@link https://github.com/andersmyrmel/prompt-guard#readme | Full Documentation}
+ * @see {@link https://github.com/andersmyrmel/vard#readme | Full Documentation}
  */
-export const guard = guardFn;
+export const vard = vardFn;
 
 /**
- * Default export - same as named `guard` export.
+ * Short alias for vard - for power users who prefer brevity.
+ *
+ * @example
+ * **Using v alias**
+ * ```typescript
+ * import { v } from 'vard';
+ *
+ * const safe = v(userInput);
+ * const chatVard =v.moderate().delimiters(['CONTEXT:']);
+ * ```
+ */
+export const v = vardFn;
+
+/**
+ * Default export - same as named `vard` export.
  *
  * @example
  * **ESM import**
  * ```typescript
- * import guard from 'prompt-guard';
- * const safe = guard(input);
+ * import vard from 'vard';
+ * const safe = vard(input);
  * ```
  *
  * @example
  * **CommonJS require**
  * ```typescript
- * const guard = require('prompt-guard').default;
- * const safe = guard(input);
+ * const vard = require('vard').default;
+ * const safe = vard(input);
  * ```
  */
-export default guard;
+export default vard;
 
 /**
- * Creates a new guard with default (moderate) configuration.
+ * Creates a new vard with default (moderate) configuration.
  *
- * This is equivalent to `guard()` with no arguments. Provided as a named
+ * This is equivalent to `vard()` with no arguments. Provided as a named
  * export for clarity in advanced use cases.
  *
- * @returns Chainable guard builder with moderate preset
+ * @returns Chainable vard builder with moderate preset
  *
  * @example
- * **Using createGuard() directly**
+ * **Using createVard() directly**
  * ```typescript
- * import { createGuard } from 'prompt-guard';
+ * import { createVard } from 'vard';
  *
- * const myGuard = createGuard()
+ * const myVard =createVard()
  *   .delimiters(['CONTEXT:'])
  *   .maxLength(5000);
  *
- * const safe = myGuard.parse(userInput);
+ * const safe = myVard.parse(userInput);
  * ```
  *
- * @see {@link guard} for the main entry point
+ * @see {@link vard} for the main entry point
  */
-export function createGuard(): CallableGuard {
-  const builder = new GuardBuilder();
-  return GuardBuilder.createCallable(builder);
+export function createVard(): CallableVard {
+  const builder = new VardBuilder();
+  return VardBuilder.createCallable(builder);
 }

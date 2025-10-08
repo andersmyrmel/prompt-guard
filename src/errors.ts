@@ -14,10 +14,10 @@ import type { Threat } from './types';
  * @example
  * **Basic error handling**
  * ```typescript
- * import guard, { PromptInjectionError } from 'prompt-guard';
+ * import vard, { PromptInjectionError } from 'vard';
  *
  * try {
- *   const safe = guard(userInput);
+ *   const safe = vard(userInput);
  *   processInput(safe);
  * } catch (error) {
  *   if (error instanceof PromptInjectionError) {
@@ -34,7 +34,7 @@ import type { Threat } from './types';
  * **Inspecting detected threats**
  * ```typescript
  * try {
- *   guard(userInput);
+ *   vard(userInput);
  * } catch (error) {
  *   if (error instanceof PromptInjectionError) {
  *     error.threats.forEach(threat => {
@@ -51,7 +51,7 @@ import type { Threat } from './types';
  * **Norwegian error messages**
  * ```typescript
  * try {
- *   guard(userInput);
+ *   vard(userInput);
  * } catch (error) {
  *   if (error instanceof PromptInjectionError) {
  *     return {
@@ -141,7 +141,7 @@ export class PromptInjectionError extends Error {
    * **Server-side logging**
    * ```typescript
    * try {
-   *   guard(userInput);
+   *   vard(userInput);
    * } catch (error) {
    *   if (error instanceof PromptInjectionError) {
    *     // Log detailed info server-side (safe)

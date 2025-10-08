@@ -12,8 +12,8 @@
  * @example
  * **Configure actions per threat type**
  * ```typescript
- * import guard from 'prompt-guard';
- * import type { ThreatType } from 'prompt-guard';
+ * import vard from 'vard';
+ * import type { ThreatType } from 'vard';
  *
  * const threats: ThreatType[] = [
  *   'instructionOverride',
@@ -21,11 +21,11 @@
  *   'systemPromptLeak',
  * ];
  *
- * const myGuard = guard();
- * threats.forEach(threat => myGuard.block(threat));
+ * const myVard = vard();
+ * threats.forEach(threat => myVard.block(threat));
  * ```
  *
- * @see {@link https://github.com/andersmyrmel/prompt-guard#threat-types | Full threat type documentation}
+ * @see {@link https://github.com/andersmyrmel/vard#threat-types | Full threat type documentation}
  */
 export type ThreatType =
   | "instructionOverride"
@@ -49,19 +49,19 @@ export type ThreatType =
  * @example
  * **Set actions for different threat types**
  * ```typescript
- * import guard from 'prompt-guard';
+ * import vard from 'vard';
  *
- * const myGuard = guard()
+ * const myVard = vard()
  *   .block('instructionOverride')    // Throw error
  *   .sanitize('delimiterInjection')  // Remove delimiters
  *   .warn('roleManipulation')        // Log but allow
  *   .allow('encoding');              // Ignore completely
  * ```
  *
- * @see {@link GuardBuilder.block}
- * @see {@link GuardBuilder.sanitize}
- * @see {@link GuardBuilder.warn}
- * @see {@link GuardBuilder.allow}
+ * @see {@link VardBuilder.block}
+ * @see {@link VardBuilder.sanitize}
+ * @see {@link VardBuilder.warn}
+ * @see {@link VardBuilder.allow}
  */
 export type ThreatAction = "block" | "sanitize" | "warn" | "allow";
 
@@ -74,11 +74,11 @@ export type ThreatAction = "block" | "sanitize" | "warn" | "allow";
  * @example
  * **Inspect detected threats**
  * ```typescript
- * import guard, { PromptInjectionError } from 'prompt-guard';
- * import type { Threat } from 'prompt-guard';
+ * import vard, { PromptInjectionError } from 'vard';
+ * import type { Threat } from 'vard';
  *
  * try {
- *   guard(userInput);
+ *   vard(userInput);
  * } catch (error) {
  *   if (error instanceof PromptInjectionError) {
  *     error.threats.forEach((threat: Threat) => {
@@ -94,7 +94,7 @@ export type ThreatAction = "block" | "sanitize" | "warn" | "allow";
  * @example
  * **Filter threats by severity**
  * ```typescript
- * const result = guard.safe(userInput);
+ * const result = vard.safe(userInput);
  *
  * if (!result.safe) {
  *   const criticalThreats = result.threats.filter(t => t.severity >= 0.9);
@@ -125,8 +125,8 @@ export interface Threat {
  * @example
  * **Add Norwegian patterns**
  * ```typescript
- * import guard from 'prompt-guard';
- * import type { Pattern } from 'prompt-guard';
+ * import vard from 'vard';
+ * import type { Pattern } from 'vard';
  *
  * const norwegianPatterns: Pattern[] = [
  *   {
@@ -141,7 +141,7 @@ export interface Threat {
  *   },
  * ];
  *
- * const norwegianGuard = guard()
+ * const norwegianVard = vard()
  *   .patterns(norwegianPatterns)
  *   .block('instructionOverride')
  *   .block('roleManipulation');
@@ -156,7 +156,7 @@ export interface Threat {
  *   type: 'systemPromptLeak',
  * };
  *
- * const medicalGuard = guard()
+ * const medicalVard = vard()
  *   .pattern(medicalPattern.regex, medicalPattern.severity, medicalPattern.type)
  *   .block('systemPromptLeak');
  * ```
@@ -165,8 +165,8 @@ export interface Threat {
  * **ReDoS Warning**: All regex patterns should use bounded quantifiers to prevent
  * Regular Expression Denial of Service attacks. Avoid: `(.*)+`, `(a+)+`, etc.
  *
- * @see {@link GuardBuilder.pattern} for adding single patterns
- * @see {@link GuardBuilder.patterns} for adding multiple patterns
+ * @see {@link VardBuilder.pattern} for adding single patterns
+ * @see {@link VardBuilder.patterns} for adding multiple patterns
  */
 export interface Pattern {
   /** Regular expression to match (should use bounded quantifiers for safety) */
@@ -186,10 +186,10 @@ export interface Pattern {
  * @example
  * **Type narrowing with discriminated union**
  * ```typescript
- * import guard from 'prompt-guard';
- * import type { GuardResult } from 'prompt-guard';
+ * import vard from 'vard';
+ * import type { VardResult } from 'vard';
  *
- * const result: GuardResult = guard.safe(userInput);
+ * const result: VardResult = vard.safe(userInput);
  *
  * if (result.safe) {
  *   // TypeScript knows result.data is string
@@ -208,7 +208,7 @@ export interface Pattern {
  * **Early return pattern**
  * ```typescript
  * function processUserInput(input: string) {
- *   const result = guard.safe(input);
+ *   const result = vard.safe(input);
  *
  *   if (!result.safe) {
  *     return { error: 'Invalid input', threats: result.threats };
@@ -219,25 +219,25 @@ export interface Pattern {
  * }
  * ```
  *
- * @see {@link GuardBuilder.safeParse} for usage
+ * @see {@link VardBuilder.safeParse} for usage
  */
-export type GuardResult =
+export type VardResult =
   | { safe: true; data: string }
   | { safe: false; threats: Threat[] };
 
 /**
- * Internal configuration object for GuardBuilder.
+ * Internal configuration object for VardBuilder.
  *
  * This is primarily used internally but can be useful for debugging or
- * understanding guard behavior.
+ * understanding vard behavior.
  *
  * @remarks
  * Most users don't need to interact with this type directly - use the
- * chainable builder methods instead (`guard().threshold()`, `.delimiters()`, etc.)
+ * chainable builder methods instead (`vard().threshold()`, `.delimiters()`, etc.)
  *
- * @see {@link GuardBuilder} for the public API
+ * @see {@link VardBuilder} for the public API
  */
-export interface GuardConfig {
+export interface VardConfig {
   /** Detection threshold (0-1) - only threats with severity >= threshold are processed */
   threshold: number;
   /** Maximum input length in characters */
@@ -262,90 +262,90 @@ export interface GuardConfig {
  * @example
  * **Use preset factories**
  * ```typescript
- * import guard from 'prompt-guard';
+ * import vard from 'vard';
  *
- * const strict = guard.strict();    // threshold: 0.5
- * const moderate = guard.moderate(); // threshold: 0.7 (default)
- * const lenient = guard.lenient();   // threshold: 0.85
+ * const strict = vard.strict();    // threshold: 0.5
+ * const moderate = vard.moderate(); // threshold: 0.7 (default)
+ * const lenient = vard.lenient();   // threshold: 0.85
  * ```
  *
- * @see {@link guard.strict}
- * @see {@link guard.moderate}
- * @see {@link guard.lenient}
+ * @see {@link vard.strict}
+ * @see {@link vard.moderate}
+ * @see {@link vard.lenient}
  */
 export type PresetName = "strict" | "moderate" | "lenient";
 
 /**
- * Callable guard type - a function with attached chainable methods.
+ * Callable vard type - a function with attached chainable methods.
  *
- * This type represents a guard that can be used both as a function
+ * This type represents a vard that can be used both as a function
  * and as an object with chainable configuration methods.
  *
  * @remarks
  * **Usage patterns**:
- * - **As function**: `myGuard(input)` - shorthand for `myGuard.parse(input)`
- * - **As object**: `myGuard.parse(input)` - explicit validation
- * - **Chainable**: `myGuard.threshold(0.8).delimiters([...])` - configure guard
+ * - **As function**: `myVard(input)` - shorthand for `myVard.parse(input)`
+ * - **As object**: `myVard.parse(input)` - explicit validation
+ * - **Chainable**: `myVard.threshold(0.8).delimiters([...])` - configure vard
  *
- * All chainable methods return a new `CallableGuard` instance (immutable).
+ * All chainable methods return a new `CallableVard` instance (immutable).
  *
  * @example
- * **Create and use callable guard**
+ * **Create and use callable vard**
  * ```typescript
- * import guard from 'prompt-guard';
+ * import vard from 'vard';
  *
- * // Create configured guard
- * const chatGuard = guard()
+ * // Create configured vard
+ * const chatVard = vard()
  *   .delimiters(['CONTEXT:', 'USER:'])
  *   .threshold(0.8)
  *   .block('instructionOverride');
  *
  * // Use as function (shorthand)
- * const safe1 = chatGuard(userInput);
+ * const safe1 = chatVard(userInput);
  *
  * // Use as object (explicit)
- * const safe2 = chatGuard.parse(userInput);
+ * const safe2 = chatVard.parse(userInput);
  *
  * // Use safeParse (no throw)
- * const result = chatGuard.safeParse(userInput);
+ * const result = chatVard.safeParse(userInput);
  * ```
  *
  * @example
  * **Chain after preset**
  * ```typescript
- * const myGuard = guard.moderate()
+ * const myVard = vard.moderate()
  *   .delimiters(['SYSTEM:'])
  *   .maxLength(5000);
  *
- * myGuard('Hello world');  // Validates immediately
+ * myVard('Hello world');  // Validates immediately
  * ```
  *
- * @see {@link guard} for creating callable guards
- * @see {@link GuardBuilder} for the implementation
+ * @see {@link vard} for creating callable vards
+ * @see {@link VardBuilder} for the implementation
  */
-export type CallableGuard = {
+export type CallableVard = {
   /** Shorthand for `parse()` - validates input and returns safe string (throws on threat) */
   (input: string): string;
   /** Validates input and returns safe string (throws `PromptInjectionError` on threat) */
   parse(input: string): string;
-  /** Validates input without throwing - returns `GuardResult` discriminated union */
-  safeParse(input: string): GuardResult;
+  /** Validates input without throwing - returns `VardResult` discriminated union */
+  safeParse(input: string): VardResult;
   /** Configure custom prompt delimiters to protect */
-  delimiters(delims: string[]): CallableGuard;
+  delimiters(delims: string[]): CallableVard;
   /** Add a single custom detection pattern */
-  pattern(regex: RegExp, severity?: number, type?: ThreatType): CallableGuard;
+  pattern(regex: RegExp, severity?: number, type?: ThreatType): CallableVard;
   /** Add multiple custom detection patterns */
-  patterns(patterns: Pattern[]): CallableGuard;
+  patterns(patterns: Pattern[]): CallableVard;
   /** Set maximum input length in characters */
-  maxLength(length: number): CallableGuard;
+  maxLength(length: number): CallableVard;
   /** Set detection threshold (0-1, lower = more sensitive) */
-  threshold(value: number): CallableGuard;
-  /** Configure guard to throw error for a threat type */
-  block(threat: ThreatType): CallableGuard;
-  /** Configure guard to remove/clean a threat type */
-  sanitize(threat: ThreatType): CallableGuard;
-  /** Configure guard to categorize but not block a threat type */
-  warn(threat: ThreatType): CallableGuard;
-  /** Configure guard to completely ignore a threat type */
-  allow(threat: ThreatType): CallableGuard;
+  threshold(value: number): CallableVard;
+  /** Configure vard to throw error for a threat type */
+  block(threat: ThreatType): CallableVard;
+  /** Configure vard to remove/clean a threat type */
+  sanitize(threat: ThreatType): CallableVard;
+  /** Configure vard to categorize but not block a threat type */
+  warn(threat: ThreatType): CallableVard;
+  /** Configure vard to completely ignore a threat type */
+  allow(threat: ThreatType): CallableVard;
 };

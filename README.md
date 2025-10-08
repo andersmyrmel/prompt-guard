@@ -1,13 +1,13 @@
-# prompt-guard
+# vard
 
 > Lightweight prompt injection detection for LLM applications. Zod-inspired chainable API for prompt security.
 
-[![npm version](https://img.shields.io/npm/v/prompt-guard.svg)](https://www.npmjs.com/package/prompt-guard)
-[![npm downloads](https://img.shields.io/npm/dm/prompt-guard.svg)](https://www.npmjs.com/package/prompt-guard)
-[![bundle size](https://img.shields.io/bundlephobia/minzip/prompt-guard)](https://bundlephobia.com/package/prompt-guard)
+[![npm version](https://img.shields.io/npm/v/vard.svg)](https://www.npmjs.com/package/vard)
+[![npm downloads](https://img.shields.io/npm/dm/vard.svg)](https://www.npmjs.com/package/vard)
+[![bundle size](https://img.shields.io/bundlephobia/minzip/vard)](https://bundlephobia.com/package/vard)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-[**Try it in CodeSandbox →**](https://codesandbox.io/s/github/andersmyrmel/prompt-guard/tree/main/playground)
+[**Try it in CodeSandbox →**](https://codesandbox.io/s/github/andersmyrmel/vard/tree/main/playground)
 
 ---
 
@@ -17,7 +17,7 @@
 - [What it protects against](#what-it-protects-against)
 - [Installation](#installation)
 - [Quick Start](#quick-start)
-- [Why prompt-guard?](#why-prompt-guard)
+- [Why vard?](#why-vard)
 - [Real-World Example: RAG Chat](#real-world-example-rag-chat)
 - [Usage](#usage)
   - [Zero Config](#zero-config)
@@ -39,7 +39,7 @@
 
 ## Features
 
-- **Zero config** - `guard(userInput)` just works
+- **Zero config** - `vard(userInput)` just works
 - **Chainable API** - Fluent, readable configuration
 - **TypeScript-first** - Excellent type inference and autocomplete
 - **Fast** - < 0.5ms p99 latency, pattern-based (no LLM calls)
@@ -61,29 +61,29 @@
 ## Installation
 
 ```bash
-npm install prompt-guard
+npm install vard
 # or
-pnpm add prompt-guard
+pnpm add vard
 # or
-yarn add prompt-guard
+yarn add vard
 ```
 
 ## Quick Start
 
 ```typescript
-import guard from "prompt-guard";
+import vard from "vard";
 
 // Zero config - just works!
-const safe = guard(userInput);
+const safe = vard(userInput);
 ```
 
 That's it! If the input is malicious, it throws. If it's safe, you get the sanitized input back.
 
 ---
 
-## Why prompt-guard?
+## Why vard?
 
-| Feature              | prompt-guard                     | LLM-based Detection     | Rule-based WAF   |
+| Feature              | vard                             | LLM-based Detection     | Rule-based WAF   |
 | -------------------- | -------------------------------- | ----------------------- | ---------------- |
 | **Latency**          | < 0.5ms                          | ~200ms                  | ~1-5ms           |
 | **Cost**             | Free                             | $0.001-0.01 per request | Free             |
@@ -94,7 +94,7 @@ That's it! If the input is malicious, it throws. If it's safe, you get the sanit
 | **Bundle Size**      | < 10KB                           | N/A (API)               | Varies           |
 | **Language Support** | ✅ Custom patterns               | ✅                      | ⚠️ Limited       |
 
-**When to use prompt-guard:**
+**When to use vard:**
 
 - ✅ Real-time validation (< 1ms required)
 - ✅ High request volume (cost-sensitive)
@@ -114,10 +114,10 @@ That's it! If the input is malicious, it throws. If it's safe, you get the sanit
 ## Real-World Example: RAG Chat
 
 ```typescript
-import guard, { PromptInjectionError } from "prompt-guard";
+import vard, { PromptInjectionError } from "vard";
 
-// Create guard for your chat app
-const chatGuard = guard
+// Create vard for your chat app
+const chatVard = vard
   .moderate()
   .delimiters(["CONTEXT:", "USER QUERY:", "CHAT HISTORY:"])
   .maxLength(5000)
@@ -127,7 +127,7 @@ const chatGuard = guard
 
 async function handleChat(userMessage: string) {
   try {
-    const safeMessage = chatGuard.parse(userMessage);
+    const safeMessage = chatVard.parse(userMessage);
 
     // Build your prompt with safe input
     const prompt = `
@@ -156,10 +156,10 @@ CHAT HISTORY: ${conversationHistory}
 ### Zero Config
 
 ```typescript
-import guard from "prompt-guard";
+import vard from "vard";
 
 try {
-  const safe = guard("Hello, how can I help?");
+  const safe = vard("Hello, how can I help?");
   // Use safe input in your prompt...
 } catch (error) {
   console.error("Invalid input detected");
@@ -169,7 +169,7 @@ try {
 ### Safe Parse (no exceptions)
 
 ```typescript
-const result = guard.safe(userInput);
+const result = vard.safe(userInput);
 
 if (result.safe) {
   console.log("Safe input:", result.data);
@@ -182,67 +182,67 @@ if (result.safe) {
 
 ```typescript
 // Strict: Low threshold (0.5), blocks everything
-const strict = guard.strict();
+const strict = vard.strict();
 const safe = strict.parse(userInput);
 
 // Moderate: Balanced (0.7 threshold) - default
-const moderate = guard.moderate();
+const moderate = vard.moderate();
 
 // Lenient: High threshold (0.85), more sanitization
-const lenient = guard.lenient();
+const lenient = vard.lenient();
 ```
 
 ### Chainable Configuration
 
 ```typescript
 // With default config (moderate preset)
-const myGuard = guard()
+const myVard = vard()
   .delimiters(["CONTEXT:", "USER:", "SYSTEM:"])
   .maxLength(10000)
   .threshold(0.7);
 
-const safe = myGuard.parse(userInput);
+const safe = myVard.parse(userInput);
 
 // Or start with a preset
-const chatGuard = guard
+const chatVard = vard
   .moderate()
   .delimiters(["CONTEXT:", "USER:", "SYSTEM:"])
   .maxLength(10000);
 
-const safe = chatGuard.parse(userInput);
+const safe = chatVard.parse(userInput);
 ```
 
 ### Custom Patterns
 
 ```typescript
 // Add language-specific patterns
-const spanishGuard = guard
+const spanishVard = vard
   .moderate()
   .pattern(/ignora.*instrucciones/i, 0.9, "instructionOverride")
   .pattern(/eres ahora/i, 0.85, "roleManipulation")
   .pattern(/revela.*instrucciones/i, 0.95, "systemPromptLeak");
 
 // Add domain-specific patterns
-const financeGuard = guard
+const financeVard = vard
   .moderate()
   .pattern(/transfer.*funds/i, 0.85, "instructionOverride")
   .pattern(/withdraw.*account/i, 0.9, "instructionOverride");
 
-const safe = spanishGuard.parse(userInput);
+const safe = spanishVard.parse(userInput);
 ```
 
 ### Threat-Specific Actions
 
 ```typescript
 // Customize how each threat type is handled
-const myGuard = guard
+const myVard = vard
   .moderate()
   .block("instructionOverride") // Throw error
   .sanitize("delimiterInjection") // Remove/clean
   .warn("roleManipulation") // Log but allow (silent in v1.0)
   .allow("encoding"); // Ignore completely
 
-const safe = myGuard.parse(userInput);
+const safe = myVard.parse(userInput);
 ```
 
 > **Note**: In v1.0, the `.warn()` action is silent (threats are categorized but not logged). Future versions will add a logging callback option.
@@ -251,30 +251,30 @@ const safe = myGuard.parse(userInput);
 
 ### Factory Functions
 
-#### `guard(input: string): string`
+#### `vard(input: string): string`
 
 Parse input with default (moderate) configuration. Throws `PromptInjectionError` on detection.
 
 ```typescript
-const safe = guard("Hello world");
+const safe = vard("Hello world");
 ```
 
-#### `guard(): GuardBuilder`
+#### `vard(): VardBuilder`
 
-Create a chainable guard builder with default (moderate) configuration.
+Create a chainable vard builder with default (moderate) configuration.
 
 ```typescript
-const myGuard = guard().delimiters(["CONTEXT:"]).maxLength(5000);
+const myVard = vard().delimiters(["CONTEXT:"]).maxLength(5000);
 
-const safe = myGuard.parse(userInput);
+const safe = myVard.parse(userInput);
 ```
 
-#### `guard.safe(input: string): GuardResult`
+#### `vard.safe(input: string): VardResult`
 
 Safe parse with default configuration. Returns result instead of throwing.
 
 ```typescript
-const result = guard.safe(userInput);
+const result = vard.safe(userInput);
 if (result.safe) {
   console.log(result.data);
 } else {
@@ -282,41 +282,41 @@ if (result.safe) {
 }
 ```
 
-#### `guard.strict(): GuardBuilder`
+#### `vard.strict(): VardBuilder`
 
-Create strict guard (threshold: 0.5, all threats blocked).
+Create strict vard (threshold: 0.5, all threats blocked).
 
-#### `guard.moderate(): GuardBuilder`
+#### `vard.moderate(): VardBuilder`
 
-Create moderate guard (threshold: 0.7, balanced).
+Create moderate vard (threshold: 0.7, balanced).
 
-#### `guard.lenient(): GuardBuilder`
+#### `vard.lenient(): VardBuilder`
 
-Create lenient guard (threshold: 0.85, more sanitization).
+Create lenient vard (threshold: 0.85, more sanitization).
 
-### GuardBuilder Methods
+### VardBuilder Methods
 
-All methods return a new `GuardBuilder` instance (immutable).
+All methods return a new `VardBuilder` instance (immutable).
 
 #### Configuration
 
-- `.delimiters(delims: string[]): GuardBuilder` - Set custom prompt delimiters to protect
-- `.pattern(regex: RegExp, severity?: number, type?: ThreatType): GuardBuilder` - Add single custom pattern
-- `.patterns(patterns: Pattern[]): GuardBuilder` - Add multiple custom patterns
-- `.maxLength(length: number): GuardBuilder` - Set maximum input length (default: 100,000)
-- `.threshold(value: number): GuardBuilder` - Set detection threshold 0-1 (default: 0.7)
+- `.delimiters(delims: string[]): VardBuilder` - Set custom prompt delimiters to protect
+- `.pattern(regex: RegExp, severity?: number, type?: ThreatType): VardBuilder` - Add single custom pattern
+- `.patterns(patterns: Pattern[]): VardBuilder` - Add multiple custom patterns
+- `.maxLength(length: number): VardBuilder` - Set maximum input length (default: 100,000)
+- `.threshold(value: number): VardBuilder` - Set detection threshold 0-1 (default: 0.7)
 
 #### Threat Actions
 
-- `.block(threat: ThreatType): GuardBuilder` - Block (throw) on this threat
-- `.sanitize(threat: ThreatType): GuardBuilder` - Sanitize (clean) this threat
-- `.warn(threat: ThreatType): GuardBuilder` - Warn about this threat (silent in v1.0, categorized but not logged)
-- `.allow(threat: ThreatType): GuardBuilder` - Ignore this threat
+- `.block(threat: ThreatType): VardBuilder` - Block (throw) on this threat
+- `.sanitize(threat: ThreatType): VardBuilder` - Sanitize (clean) this threat
+- `.warn(threat: ThreatType): VardBuilder` - Warn about this threat (silent in v1.0, categorized but not logged)
+- `.allow(threat: ThreatType): VardBuilder` - Ignore this threat
 
 #### Execution
 
 - `.parse(input: string): string` - Parse input. Throws `PromptInjectionError` on detection
-- `.safeParse(input: string): GuardResult` - Safe parse. Returns result instead of throwing
+- `.safeParse(input: string): VardResult` - Safe parse. Returns result instead of throwing
 
 ### Types
 
@@ -337,7 +337,7 @@ interface Threat {
   position: number; // Where in input
 }
 
-type GuardResult =
+type VardResult =
   | { safe: true; data: string }
   | { safe: false; threats: Threat[] };
 ```
@@ -360,7 +360,7 @@ class PromptInjectionError extends Error {
 ### Block Everything (Strict)
 
 ```typescript
-const strict = guard.strict();
+const strict = vard.strict();
 try {
   const safe = strict.parse(userInput);
 } catch (error) {
@@ -371,7 +371,7 @@ try {
 ### Sanitize Instead of Block
 
 ```typescript
-const lenient = guard
+const lenient = vard
   .lenient()
   .sanitize("instructionOverride")
   .sanitize("roleManipulation");
@@ -383,37 +383,37 @@ const safe = lenient.parse(userInput);
 ### Custom Delimiters
 
 ```typescript
-const myGuard = guard
+const myVard = vard
   .moderate()
   .delimiters(["<context>", "</context>", "USER:", "ASSISTANT:"]);
 
 // Throws if input contains these delimiters
-const safe = myGuard.parse(userInput);
+const safe = myVard.parse(userInput);
 ```
 
 ### Multilingual Support
 
 ```typescript
 // Add language-specific attack patterns
-const spanishGuard = guard
+const spanishVard = vard
   .moderate()
   .pattern(/ignora.*instrucciones/i, 0.9, "instructionOverride")
   .pattern(/eres ahora/i, 0.85, "roleManipulation");
 
 // French
-const frenchGuard = guard
+const frenchVard = vard
   .moderate()
   .pattern(/ignorer.*instructions/i, 0.9, "instructionOverride")
   .pattern(/tu es maintenant/i, 0.85, "roleManipulation");
 
 // German
-const germanGuard = guard
+const germanVard = vard
   .moderate()
   .pattern(/ignoriere.*anweisungen/i, 0.9, "instructionOverride")
   .pattern(/du bist jetzt/i, 0.85, "roleManipulation");
 
 // Add patterns for any language
-const multilingualGuard = guard
+const multilingualVard = vard
   .moderate()
   .pattern(/your-attack-pattern/i, 0.9, "instructionOverride");
 ```
@@ -429,7 +429,7 @@ All benchmarks run on M-series MacBook (single core):
 | **Latency (p95)** | 0.022ms        | 0.032ms          | -                   |
 | **Latency (p99)** | 0.026ms        | 0.035ms          | < 0.5ms ✅          |
 | **Bundle Size**   | -              | -                | < 10KB ✅           |
-| **Memory/Guard**  | < 100KB        | < 100KB          | -                   |
+| **Memory/Vard**   | < 100KB        | < 100KB          | -                   |
 
 **Key Advantages:**
 
@@ -456,7 +456,7 @@ Sanitization runs multiple passes (max 5 iterations) to prevent nested bypasses 
 
 ## Threat Detection
 
-prompt-guard detects 5 categories of prompt injection attacks:
+vard detects 5 categories of prompt injection attacks:
 
 | Threat Type              | Description                                         | Example Attacks                                                                                                                             | Default Action |
 | ------------------------ | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
@@ -476,7 +476,7 @@ Customize threat actions with `.block()`, `.sanitize()`, `.warn()`, or `.allow()
 
 ## Best Practices
 
-1. **Use presets as starting points**: Start with `guard.moderate()` and customize from there
+1. **Use presets as starting points**: Start with `vard.moderate()` and customize from there
 2. **Sanitize delimiters**: For user-facing apps, sanitize instead of blocking delimiter injection
 3. **Log security events**: Always log `error.getDebugInfo()` for security monitoring
 4. **Never expose threat details to users**: Use `error.getUserMessage()` for user-facing errors

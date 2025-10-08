@@ -1,13 +1,13 @@
 {
-  "name": "prompt-guard-playground",
+  "name": "vard-playground",
   "version": "1.0.0",
-  "description": "Interactive playground for prompt-guard library",
+  "description": "Interactive playground for vard library",
   "main": "index.ts",
   "scripts": {
     "dev": "vite"
   },
   "dependencies": {
-    "prompt-guard": "^1.0.0"
+    "vard": "^1.0.0"
   },
   "devDependencies": {
     "vite": "^5.0.0",

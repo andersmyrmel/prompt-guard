@@ -1,4 +1,4 @@
-import type { GuardConfig } from './types';
+import type { VardConfig } from './types';
 
 /**
  * Preset configurations for different security levels
@@ -7,7 +7,7 @@ import type { GuardConfig } from './types';
 /**
  * Strict preset: Block all threats, low threshold
  */
-export const STRICT_PRESET: GuardConfig = {
+export const STRICT_PRESET: VardConfig = {
   threshold: 0.5,
   maxLength: 100000,
   customDelimiters: [],
@@ -24,7 +24,7 @@ export const STRICT_PRESET: GuardConfig = {
 /**
  * Moderate preset: Balanced security (default)
  */
-export const MODERATE_PRESET: GuardConfig = {
+export const MODERATE_PRESET: VardConfig = {
   threshold: 0.7,
   maxLength: 100000,
   customDelimiters: [],
@@ -41,7 +41,7 @@ export const MODERATE_PRESET: GuardConfig = {
 /**
  * Lenient preset: Minimal blocking, more sanitization
  */
-export const LENIENT_PRESET: GuardConfig = {
+export const LENIENT_PRESET: VardConfig = {
   threshold: 0.85,
   maxLength: 100000,
   customDelimiters: [],
@@ -60,7 +60,7 @@ export const LENIENT_PRESET: GuardConfig = {
  */
 export function getPreset(
   name: 'strict' | 'moderate' | 'lenient'
-): GuardConfig {
+): VardConfig {
   switch (name) {
     case 'strict':
       return { ...STRICT_PRESET };

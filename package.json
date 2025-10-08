@@ -1,5 +1,5 @@
 {
-  "name": "prompt-guard",
+  "name": "vard",
   "version": "1.0.0",
   "description": "Lightweight prompt injection detection for LLM applications. Zod-inspired chainable API for prompt security.",
   "keywords": [
@@ -17,14 +17,13 @@
   ],
   "author": "Anders Myrmel",
   "license": "MIT",
-  "homepage": "https://github.com/andersmyrmel/prompt-guard",
+  "homepage": "https://github.com/andersmyrmel/vard",
   "repository": {
     "type": "git",
-    "url": "https://github.com/andersmyrmel/prompt-guard.git",
-    "directory": "packages/prompt-guard"
+    "url": "https://github.com/andersmyrmel/vard.git"
   },
   "bugs": {
-    "url": "https://github.com/andersmyrmel/prompt-guard/issues"
+    "url": "https://github.com/andersmyrmel/vard/issues"
   },
   "type": "module",
   "main": "./dist/index.js",
