@@ -7,7 +7,7 @@
     "dev": "vite"
   },
   "dependencies": {
-    "vard": "^1.0.0"
+    "@andersmyrmel/vard": "^1.0.0"
   },
   "devDependencies": {
     "vite": "^5.0.0",

@@ -2,9 +2,9 @@
 
 > Lightweight prompt injection detection for LLM applications. Zod-inspired chainable API for prompt security.
 
-[![npm version](https://img.shields.io/npm/v/vard.svg)](https://www.npmjs.com/package/vard)
-[![npm downloads](https://img.shields.io/npm/dm/vard.svg)](https://www.npmjs.com/package/vard)
-[![bundle size](https://img.shields.io/bundlephobia/minzip/vard)](https://bundlephobia.com/package/vard)
+[![npm version](https://img.shields.io/npm/v/@andersmyrmel/vard.svg)](https://www.npmjs.com/package/@andersmyrmel/vard)
+[![npm downloads](https://img.shields.io/npm/dm/@andersmyrmel/vard.svg)](https://www.npmjs.com/package/@andersmyrmel/vard)
+[![bundle size](https://img.shields.io/bundlephobia/minzip/@andersmyrmel/vard)](https://bundlephobia.com/package/@andersmyrmel/vard)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 [**Try it in CodeSandbox →**](https://codesandbox.io/s/github/andersmyrmel/vard/tree/main/playground)
@@ -62,11 +62,11 @@
 ## Installation
 
 ```bash
-npm install vard
+npm install @andersmyrmel/vard
 # or
-pnpm add vard
+pnpm add @andersmyrmel/vard
 # or
-yarn add vard
+yarn add @andersmyrmel/vard
 ```
 
 ## Quick Start

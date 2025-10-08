@@ -1,5 +1,5 @@
 {
-  "name": "vard",
+  "name": "@andersmyrmel/vard",
   "version": "1.0.0",
   "description": "Lightweight prompt injection detection for LLM applications. Zod-inspired chainable API for prompt security.",
   "keywords": [

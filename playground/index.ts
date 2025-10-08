@@ -1,4 +1,4 @@
-import vard, { PromptInjectionError } from 'vard';
+import vard, { PromptInjectionError } from '@andersmyrmel/vard';
 
 // Utility to render output to both console and HTML
 function renderOutput(elementId: string, content: string, type: 'success' | 'error' | 'info' = 'info') {
