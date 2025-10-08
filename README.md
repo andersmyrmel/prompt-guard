@@ -72,7 +72,7 @@ yarn add @andersmyrmel/vard
 ## Quick Start
 
 ```typescript
-import vard from "vard";
+import vard from "@andersmyrmel/vard";
 
 // Zero config - just works!
 const safe = vard(userInput);
@@ -115,7 +115,7 @@ That's it! If the input is malicious, it throws. If it's safe, you get the sanit
 ## Real-World Example: RAG Chat
 
 ```typescript
-import vard, { PromptInjectionError } from "vard";
+import vard, { PromptInjectionError } from "@andersmyrmel/vard";
 
 // Create vard for your chat app
 const chatVard = vard
@@ -157,7 +157,7 @@ CHAT HISTORY: ${conversationHistory}
 ### Zero Config
 
 ```typescript
-import vard from "vard";
+import vard from "@andersmyrmel/vard";
 
 try {
   const safe = vard("Hello, how can I help?");
@@ -170,7 +170,7 @@ try {
 ### Brevity (Short Alias)
 
 ```typescript
-import { v } from "vard";
+import { v } from "@andersmyrmel/vard";
 
 // For power users who prefer brevity
 const safe = v(userInput);

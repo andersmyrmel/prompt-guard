@@ -14,7 +14,7 @@ import type { Threat } from './types';
  * @example
  * **Basic error handling**
  * ```typescript
- * import vard, { PromptInjectionError } from 'vard';
+ * import vard, { PromptInjectionError } from '@andersmyrmel/vard';
  *
  * try {
  *   const safe = vard(userInput);

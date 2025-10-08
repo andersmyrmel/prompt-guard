@@ -1,4 +1,4 @@
-import type { VardConfig } from './types';
+import type { VardConfig } from "./types";
 
 /**
  * Preset configurations for different security levels
@@ -13,11 +13,11 @@ export const STRICT_PRESET: VardConfig = {
   customDelimiters: [],
   customPatterns: [],
   threatActions: {
-    instructionOverride: 'block',
-    roleManipulation: 'block',
-    delimiterInjection: 'block',
-    systemPromptLeak: 'block',
-    encoding: 'block',
+    instructionOverride: "block",
+    roleManipulation: "block",
+    delimiterInjection: "block",
+    systemPromptLeak: "block",
+    encoding: "block",
   },
 };
 
@@ -30,11 +30,11 @@ export const MODERATE_PRESET: VardConfig = {
   customDelimiters: [],
   customPatterns: [],
   threatActions: {
-    instructionOverride: 'block',
-    roleManipulation: 'block',
-    delimiterInjection: 'sanitize',
-    systemPromptLeak: 'block',
-    encoding: 'sanitize',
+    instructionOverride: "block",
+    roleManipulation: "block",
+    delimiterInjection: "sanitize",
+    systemPromptLeak: "block",
+    encoding: "sanitize",
   },
 };
 
@@ -47,26 +47,24 @@ export const LENIENT_PRESET: VardConfig = {
   customDelimiters: [],
   customPatterns: [],
   threatActions: {
-    instructionOverride: 'sanitize',
-    roleManipulation: 'warn',
-    delimiterInjection: 'sanitize',
-    systemPromptLeak: 'sanitize',
-    encoding: 'sanitize',
+    instructionOverride: "sanitize",
+    roleManipulation: "warn",
+    delimiterInjection: "sanitize",
+    systemPromptLeak: "sanitize",
+    encoding: "sanitize",
   },
 };
 
 /**
  * Get a preset configuration by name
  */
-export function getPreset(
-  name: 'strict' | 'moderate' | 'lenient'
-): VardConfig {
+export function getPreset(name: "strict" | "moderate" | "lenient"): VardConfig {
   switch (name) {
-    case 'strict':
+    case "strict":
       return { ...STRICT_PRESET };
-    case 'moderate':
+    case "moderate":
       return { ...MODERATE_PRESET };
-    case 'lenient':
+    case "lenient":
       return { ...LENIENT_PRESET };
     default:
       return { ...MODERATE_PRESET };

@@ -12,8 +12,8 @@
  * @example
  * **Configure actions per threat type**
  * ```typescript
- * import vard from 'vard';
- * import type { ThreatType } from 'vard';
+ * import vard from '@andersmyrmel/vard';
+ * import type { ThreatType } from '@andersmyrmel/vard';
  *
  * const threats: ThreatType[] = [
  *   'instructionOverride',
@@ -49,7 +49,7 @@ export type ThreatType =
  * @example
  * **Set actions for different threat types**
  * ```typescript
- * import vard from 'vard';
+ * import vard from '@andersmyrmel/vard';
  *
  * const myVard = vard()
  *   .block('instructionOverride')    // Throw error
@@ -74,8 +74,8 @@ export type ThreatAction = "block" | "sanitize" | "warn" | "allow";
  * @example
  * **Inspect detected threats**
  * ```typescript
- * import vard, { PromptInjectionError } from 'vard';
- * import type { Threat } from 'vard';
+ * import vard, { PromptInjectionError } from '@andersmyrmel/vard';
+ * import type { Threat } from '@andersmyrmel/vard';
  *
  * try {
  *   vard(userInput);
@@ -125,8 +125,8 @@ export interface Threat {
  * @example
  * **Add Norwegian patterns**
  * ```typescript
- * import vard from 'vard';
- * import type { Pattern } from 'vard';
+ * import vard from '@andersmyrmel/vard';
+ * import type { Pattern } from '@andersmyrmel/vard';
  *
  * const norwegianPatterns: Pattern[] = [
  *   {
@@ -186,8 +186,8 @@ export interface Pattern {
  * @example
  * **Type narrowing with discriminated union**
  * ```typescript
- * import vard from 'vard';
- * import type { VardResult } from 'vard';
+ * import vard from '@andersmyrmel/vard';
+ * import type { VardResult } from '@andersmyrmel/vard';
  *
  * const result: VardResult = vard.safe(userInput);
  *
@@ -262,7 +262,7 @@ export interface VardConfig {
  * @example
  * **Use preset factories**
  * ```typescript
- * import vard from 'vard';
+ * import vard from '@andersmyrmel/vard';
  *
  * const strict = vard.strict();    // threshold: 0.5
  * const moderate = vard.moderate(); // threshold: 0.7 (default)
@@ -292,7 +292,7 @@ export type PresetName = "strict" | "moderate" | "lenient";
  * @example
  * **Create and use callable vard**
  * ```typescript
- * import vard from 'vard';
+ * import vard from '@andersmyrmel/vard';
  *
  * // Create configured vard
  * const chatVard = vard()

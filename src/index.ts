@@ -1,6 +1,6 @@
-import { VardBuilder } from './vard';
-import { getPreset } from './presets';
-import type { VardResult, CallableVard } from './types';
+import { VardBuilder } from "./vard";
+import { getPreset } from "./presets";
+import type { VardResult, CallableVard } from "./types";
 
 export type {
   ThreatType,
@@ -10,8 +10,8 @@ export type {
   Pattern,
   VardConfig,
   PresetName,
-} from './types';
-export { PromptInjectionError } from './errors';
+} from "./types";
+export { PromptInjectionError } from "./errors";
 
 /**
  * Main vard function - validates input against prompt injection attacks.
@@ -29,7 +29,7 @@ export { PromptInjectionError } from './errors';
  * @example
  * **Zero-config usage (throws on threat)**
  * ```typescript
- * import vard from 'vard';
+ * import vard from '@andersmyrmel/vard';
  *
  * const safe = vard('Hello, how can I help?');
  * // Returns: 'Hello, how can I help?'
@@ -79,7 +79,7 @@ function vardFn(input?: string): string | CallableVard {
  * @example
  * **Safe validation (no exceptions)**
  * ```typescript
- * import vard from 'vard';
+ * import vard from '@andersmyrmel/vard';
  *
  * const result = vard.safe(userInput);
  *
@@ -123,7 +123,7 @@ vardFn.safe = (input: string): VardResult => {
  * @example
  * **Strict preset blocks more aggressively**
  * ```typescript
- * import vard from 'vard';
+ * import vard from '@andersmyrmel/vard';
  *
  * const strict = vard.strict();
  *
@@ -146,7 +146,7 @@ vardFn.safe = (input: string): VardResult => {
  * @see {@link vard.lenient} for permissive detection
  */
 vardFn.strict = (): CallableVard => {
-  const builder = new VardBuilder(getPreset('strict'));
+  const builder = new VardBuilder(getPreset("strict"));
   return VardBuilder.createCallable(builder);
 };
 
@@ -161,7 +161,7 @@ vardFn.strict = (): CallableVard => {
  * @example
  * **Moderate preset (balanced security)**
  * ```typescript
- * import vard from 'vard';
+ * import vard from '@andersmyrmel/vard';
  *
  * const moderate = vard.moderate();
  *
@@ -189,7 +189,7 @@ vardFn.strict = (): CallableVard => {
  * @see {@link vard.lenient} for permissive detection
  */
 vardFn.moderate = (): CallableVard => {
-  const builder = new VardBuilder(getPreset('moderate'));
+  const builder = new VardBuilder(getPreset("moderate"));
   return VardBuilder.createCallable(builder);
 };
 
@@ -205,7 +205,7 @@ vardFn.moderate = (): CallableVard => {
  * @example
  * **Lenient preset allows more through**
  * ```typescript
- * import vard from 'vard';
+ * import vard from '@andersmyrmel/vard';
  *
  * const lenient = vard.lenient();
  *
@@ -233,7 +233,7 @@ vardFn.moderate = (): CallableVard => {
  * @see {@link vard.moderate} for balanced detection (default)
  */
 vardFn.lenient = (): CallableVard => {
-  const builder = new VardBuilder(getPreset('lenient'));
+  const builder = new VardBuilder(getPreset("lenient"));
   return VardBuilder.createCallable(builder);
 };
 
@@ -254,7 +254,7 @@ vardFn.lenient = (): CallableVard => {
  * @example
  * **Zero-config (recommended for most cases)**
  * ```typescript
- * import vard from 'vard';
+ * import vard from '@andersmyrmel/vard';
  *
  * try {
  *   const safe = vard(userInput);
@@ -299,7 +299,7 @@ export const vard = vardFn;
  * @example
  * **Using v alias**
  * ```typescript
- * import { v } from 'vard';
+ * import { v } from '@andersmyrmel/vard';
  *
  * const safe = v(userInput);
  * const chatVard =v.moderate().delimiters(['CONTEXT:']);
@@ -313,14 +313,14 @@ export const v = vardFn;
  * @example
  * **ESM import**
  * ```typescript
- * import vard from 'vard';
+ * import vard from '@andersmyrmel/vard';
  * const safe = vard(input);
  * ```
  *
  * @example
  * **CommonJS require**
  * ```typescript
- * const vard = require('vard').default;
+ * const vard = require('@andersmyrmel/vard').default;
  * const safe = vard(input);
  * ```
  */
@@ -337,7 +337,7 @@ export default vard;
  * @example
  * **Using createVard() directly**
  * ```typescript
- * import { createVard } from 'vard';
+ * import { createVard } from '@andersmyrmel/vard';
  *
  * const myVard =createVard()
  *   .delimiters(['CONTEXT:'])

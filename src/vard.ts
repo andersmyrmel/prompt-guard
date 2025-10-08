@@ -175,8 +175,8 @@ export class VardBuilder {
    * @example
    * **Add multiple domain-specific patterns**
    * ```typescript
-   * import vard from 'vard';
-   * import type { Pattern } from 'vard';
+   * import vard from '@andersmyrmel/vard';
+   * import type { Pattern } from '@andersmyrmel/vard';
    *
    * const medicalPatterns: Pattern[] = [
    *   {
@@ -523,7 +523,7 @@ export class VardBuilder {
    * @example
    * **Basic usage (throws on detection)**
    * ```typescript
-   * import vard, { PromptInjectionError } from 'vard';
+   * import vard, { PromptInjectionError } from '@andersmyrmel/vard';
    *
    * try {
    *   const safe = vard.moderate().parse(userInput);
@@ -647,7 +647,7 @@ export class VardBuilder {
    * @example
    * **Graceful error handling (no try/catch)**
    * ```typescript
-   * import vard from 'vard';
+   * import vard from '@andersmyrmel/vard';
    *
    * const result = vard.moderate().safeParse(userInput);
    *
