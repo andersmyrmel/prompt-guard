@@ -7,7 +7,7 @@
 [![bundle size](https://img.shields.io/bundlephobia/minzip/prompt-guard)](https://bundlephobia.com/package/prompt-guard)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-[**Try it in TypeScript Playground →**](https://www.typescriptlang.org/play?#code/JYWwDg9gTgLgBAbzgVwM4FMDKMCGN0DKcAvnAEQBGA9gHYDOMA3AFCiSwDaIAUKqGMAAoAngAdgAJxgAjODgC8cKrUatUAbQC6RADRwAFnADmwCQBpkcYIihyAlFQAMAGgBkPADxgcAczADUAH1UAIxgAXSA)
+[**Try it in StackBlitz →**](https://stackblitz.com/github/andersmyrmel/prompt-guard/tree/main/.stackblitz)
 
 ---
 

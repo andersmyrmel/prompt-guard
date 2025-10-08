@@ -1,0 +1,16 @@
+{
+  "name": "prompt-guard-playground",
+  "version": "1.0.0",
+  "description": "Interactive playground for prompt-guard library",
+  "main": "index.ts",
+  "scripts": {
+    "dev": "vite"
+  },
+  "dependencies": {
+    "prompt-guard": "^1.0.0"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0",
+    "typescript": "^5.3.0"
+  }
+}
