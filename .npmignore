@@ -1,0 +1,19 @@
+# Source files
+src/
+tests/
+*.test.ts
+*.spec.ts
+
+# Config files
+tsconfig.json
+vitest.config.ts
+.eslintrc.*
+
+# Development
+node_modules/
+.DS_Store
+*.log
+coverage/
+
+# CI/CD
+.github/
