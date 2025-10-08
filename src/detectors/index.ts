@@ -1,4 +1,4 @@
-import type { Pattern, Threat } from '../types';
+import type { Pattern, Threat } from "../types";
 
 /**
  * Detect threats in input text using provided patterns
@@ -8,9 +8,9 @@ export function detect(input: string, patterns: Pattern[]): Threat[] {
 
   for (const pattern of patterns) {
     // Add global flag to find all matches, preserve other flags
-    const flags = pattern.regex.flags.includes('g')
+    const flags = pattern.regex.flags.includes("g")
       ? pattern.regex.flags
-      : pattern.regex.flags + 'g';
+      : pattern.regex.flags + "g";
     const regex = new RegExp(pattern.regex.source, flags);
 
     // Find all matches using matchAll (modern, safer approach)
@@ -35,7 +35,7 @@ export function detect(input: string, patterns: Pattern[]): Threat[] {
 export function checkLength(input: string, maxLength: number): Threat | null {
   if (input.length > maxLength) {
     return {
-      type: 'instructionOverride', // Categorize as instruction override
+      type: "instructionOverride", // Categorize as instruction override
       severity: 0.8,
       match: `Input exceeds ${maxLength} characters`,
       position: maxLength,
@@ -52,7 +52,7 @@ export function detectSuspiciousLength(input: string): Threat | null {
   if (input.length > threshold && input.length <= 100000) {
     // Only warn, don't block
     return {
-      type: 'instructionOverride',
+      type: "instructionOverride",
       severity: 0.5,
       match: `Suspiciously long input (${input.length} chars)`,
       position: 0,
@@ -66,7 +66,7 @@ export function detectSuspiciousLength(input: string): Threat | null {
  */
 export function detectCustomDelimiters(
   input: string,
-  delimiters: string[]
+  delimiters: string[],
 ): Threat[] {
   const threats: Threat[] = [];
 
@@ -74,7 +74,7 @@ export function detectCustomDelimiters(
     const index = input.indexOf(delimiter);
     if (index !== -1) {
       threats.push({
-        type: 'delimiterInjection',
+        type: "delimiterInjection",
         severity: 0.95,
         match: delimiter,
         position: index,

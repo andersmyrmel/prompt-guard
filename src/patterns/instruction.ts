@@ -1,4 +1,4 @@
-import type { Pattern } from '../types';
+import type { Pattern } from "../types";
 
 /**
  * Patterns for instruction override attacks
@@ -11,52 +11,52 @@ export const instructionPatterns: Pattern[] = [
     regex:
       /\bignore\s+(?:(?:all|the)\s+)?(?:previous|prior|above|remaining|other)?\s*(?:instructions|directives|commands|rules|prompts?|context)\b/i,
     severity: 0.9,
-    type: 'instructionOverride',
+    type: "instructionOverride",
   },
   // "disregard (the) (system/previous) (prompt/instructions)"
   {
     regex:
       /\bdisregard\s+(?:the\s+)?(?:system|previous)\s+(?:prompt|instructions)\b/i,
     severity: 0.9,
-    type: 'instructionOverride',
+    type: "instructionOverride",
   },
   // "forget (everything/all/what) (you/i) (said/told/were told)"
   {
     regex:
       /\bforget\s+(?:everything|all|what)\s+(?:you|i)\s+(?:said|told|mentioned|were\s+told)\b/i,
     severity: 0.85,
-    type: 'instructionOverride',
+    type: "instructionOverride",
   },
   // "new (instructions/task/directive)"
   {
     regex: /\bnew\s+(?:instructions?|tasks?|directives?)\b/i,
     severity: 0.8,
-    type: 'instructionOverride',
+    type: "instructionOverride",
   },
   // "override (previous/system) (instructions/rules)"
   {
     regex:
       /\boverride\s+(?:previous|system|all)\s+(?:instructions|rules|directives)\b/i,
     severity: 0.9,
-    type: 'instructionOverride',
+    type: "instructionOverride",
   },
   // "instead (follow/use/do)"
   {
     regex: /\binstead\s+(?:follow|use|do|obey)\b/i,
     severity: 0.7,
-    type: 'instructionOverride',
+    type: "instructionOverride",
   },
   // "start over" / "begin again" / "restart" - excludes "start over with" (legitimate)
   {
     regex:
       /\b(?:start\s+over(?:\s+from\s+scratch)?(?!\s+with)|begin\s+again|restart)\b/i,
     severity: 0.75, // Increased from 0.6 to be above moderate threshold
-    type: 'instructionOverride',
+    type: "instructionOverride",
   },
   // "reset (to/your) (default/initial)"
   {
     regex: /\breset\s+(?:to\s+)?(?:default|initial|factory)\b/i,
     severity: 0.75,
-    type: 'instructionOverride',
+    type: "instructionOverride",
   },
 ];

@@ -1,4 +1,4 @@
-import type { Threat, ThreatType } from '../types';
+import type { Threat, ThreatType } from "../types";
 
 /**
  * Sanitize input by removing or neutralizing threats
@@ -57,18 +57,18 @@ function applySanitizationPass(input: string, threats: Threat[]): string {
 function sanitizeByType(
   input: string,
   type: ThreatType,
-  threats: Threat[]
+  threats: Threat[],
 ): string {
   switch (type) {
-    case 'delimiterInjection':
+    case "delimiterInjection":
       return sanitizeDelimiters(input);
-    case 'encoding':
+    case "encoding":
       return sanitizeEncoding(input);
-    case 'instructionOverride':
+    case "instructionOverride":
       return sanitizeInstructions(input, threats);
-    case 'roleManipulation':
+    case "roleManipulation":
       return sanitizeRoles(input, threats);
-    case 'systemPromptLeak':
+    case "systemPromptLeak":
       return sanitizeLeaks(input, threats);
     default:
       return input;
@@ -85,31 +85,31 @@ function sanitizeDelimiters(input: string): string {
   // Remove XML-style tags
   sanitized = sanitized.replace(
     /<\/?(?:system|user|assistant|human|ai|context|instruction|prompt)>/gi,
-    ''
+    "",
   );
 
   // Remove bracket-style markers
   sanitized = sanitized.replace(
     /\[\/?\s*(?:system|user|assistant|human|ai|context|instruction|prompt)\s*\]/gi,
-    ''
+    "",
   );
 
   // Remove hash markers
   sanitized = sanitized.replace(
     /#{2,}\s*(?:system|admin|root|user|assistant|instruction|prompt)\s*#{2,}/gi,
-    ''
+    "",
   );
 
   // Neutralize colon-style markers (replace colon with dash)
   sanitized = sanitized.replace(
     /\b(system|user|assistant|human|ai|context|instruction|prompt)\s*:/gi,
-    '$1-'
+    "$1-",
   );
 
   // Remove standalone role indicators in caps
   sanitized = sanitized.replace(
     /\b(?:SYSTEM|USER|ASSISTANT|HUMAN|AI|CONTEXT|INSTRUCTION|PROMPT)\b/g,
-    ''
+    "",
   );
 
   return sanitized;
@@ -123,33 +123,33 @@ function sanitizeEncoding(input: string): string {
   let sanitized = input;
 
   // Remove null bytes
-  sanitized = sanitized.replace(/\x00+/g, '');
+  sanitized = sanitized.replace(/\x00+/g, "");
 
   // Remove unicode directional override characters
-  sanitized = sanitized.replace(/[\u202A-\u202E\u2066-\u2069]+/g, '');
+  sanitized = sanitized.replace(/[\u202A-\u202E\u2066-\u2069]+/g, "");
 
   // Limit excessive combining diacriticals (zalgo text)
-  sanitized = sanitized.replace(/[\u0300-\u036F]{3,}/g, '');
+  sanitized = sanitized.replace(/[\u0300-\u036F]{3,}/g, "");
 
   // Remove suspicious long base64-like sequences
   sanitized = sanitized.replace(
     /[A-Za-z0-9+/]{40,}={0,2}/g,
-    '[ENCODED_REMOVED]'
+    "[ENCODED_REMOVED]",
   );
 
   // Remove hex escape sequences
-  sanitized = sanitized.replace(/(?:\\x[0-9A-Fa-f]{2}){5,}/g, '[HEX_REMOVED]');
+  sanitized = sanitized.replace(/(?:\\x[0-9A-Fa-f]{2}){5,}/g, "[HEX_REMOVED]");
 
   // Remove unicode escapes
   sanitized = sanitized.replace(
     /(?:\\u[0-9A-Fa-f]{4}){5,}/g,
-    '[UNICODE_REMOVED]'
+    "[UNICODE_REMOVED]",
   );
 
   // Remove HTML entities
   sanitized = sanitized.replace(
     /(?:&#{1,2}[xX]?[0-9A-Fa-f]+;){5,}/g,
-    '[ENTITY_REMOVED]'
+    "[ENTITY_REMOVED]",
   );
 
   return sanitized;
@@ -165,7 +165,7 @@ function sanitizeInstructions(input: string, threats: Threat[]): string {
   // Remove the matched patterns
   for (const threat of threats) {
     if (threat.match && threat.match.length > 0) {
-      sanitized = sanitized.replace(threat.match, '');
+      sanitized = sanitized.replace(threat.match, "");
     }
   }
 
@@ -182,7 +182,7 @@ function sanitizeRoles(input: string, threats: Threat[]): string {
   // Remove the matched patterns
   for (const threat of threats) {
     if (threat.match && threat.match.length > 0) {
-      sanitized = sanitized.replace(threat.match, '');
+      sanitized = sanitized.replace(threat.match, "");
     }
   }
 
@@ -199,7 +199,7 @@ function sanitizeLeaks(input: string, threats: Threat[]): string {
   // Remove the matched patterns
   for (const threat of threats) {
     if (threat.match && threat.match.length > 0) {
-      sanitized = sanitized.replace(threat.match, '');
+      sanitized = sanitized.replace(threat.match, "");
     }
   }
 

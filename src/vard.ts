@@ -5,12 +5,12 @@ import type {
   Threat,
   ThreatAction,
   ThreatType,
-} from './types';
-import { PromptInjectionError } from './errors';
-import { allPatterns } from './patterns';
-import { detect, checkLength, detectCustomDelimiters } from './detectors';
-import { sanitize } from './sanitizers';
-import { getPreset } from './presets';
+} from "./types";
+import { PromptInjectionError } from "./errors";
+import { allPatterns } from "./patterns";
+import { detect, checkLength, detectCustomDelimiters } from "./detectors";
+import { sanitize } from "./sanitizers";
+import { getPreset } from "./presets";
 
 /**
  * VardBuilder class - chainable, immutable configuration builder
@@ -20,7 +20,7 @@ export class VardBuilder {
 
   constructor(config?: Partial<VardConfig>) {
     // Default to moderate preset
-    const defaultConfig = getPreset('moderate');
+    const defaultConfig = getPreset("moderate");
     this.config = {
       ...defaultConfig,
       ...config,
@@ -32,11 +32,11 @@ export class VardBuilder {
    * Allows using vard as a function: vard(input) instead of vard.parse(input)
    */
   public static createCallable(
-    builder: VardBuilder
-  ): import('./types').CallableVard {
+    builder: VardBuilder,
+  ): import("./types").CallableVard {
     // Create a function that calls parse
     const callable = ((input: string) =>
-      builder.parse(input)) as unknown as import('./types').CallableVard;
+      builder.parse(input)) as unknown as import("./types").CallableVard;
 
     // Attach all methods to the function
     callable.parse = builder.parse.bind(builder);
@@ -45,22 +45,22 @@ export class VardBuilder {
     callable.pattern = (
       regex: RegExp,
       severity?: number,
-      type?: import('./types').ThreatType
+      type?: import("./types").ThreatType,
     ) => builder.pattern(regex, severity, type);
-    callable.patterns = (patterns: import('./types').Pattern[]) =>
+    callable.patterns = (patterns: import("./types").Pattern[]) =>
       builder.patterns(patterns);
     callable.maxLength = (length: number) => builder.maxLength(length);
     callable.threshold = (value: number) => builder.threshold(value);
-    callable.block = (threat: import('./types').ThreatType) =>
+    callable.block = (threat: import("./types").ThreatType) =>
       builder.block(threat);
-    callable.sanitize = (threat: import('./types').ThreatType) =>
+    callable.sanitize = (threat: import("./types").ThreatType) =>
       builder.sanitize(threat);
-    callable.warn = (threat: import('./types').ThreatType) =>
+    callable.warn = (threat: import("./types").ThreatType) =>
       builder.warn(threat);
-    callable.allow = (threat: import('./types').ThreatType) =>
+    callable.allow = (threat: import("./types").ThreatType) =>
       builder.allow(threat);
 
-    return callable as import('./types').CallableVard;
+    return callable as import("./types").CallableVard;
   }
 
   /**
@@ -102,7 +102,7 @@ export class VardBuilder {
    * @see {@link block} to throw on delimiter detection
    * @see {@link sanitize} to remove delimiters instead of throwing
    */
-  delimiters(delims: string[]): import('./types').CallableVard {
+  delimiters(delims: string[]): import("./types").CallableVard {
     const newBuilder = new VardBuilder({
       ...this.config,
       customDelimiters: [...delims],
@@ -153,8 +153,8 @@ export class VardBuilder {
   pattern(
     regex: RegExp,
     severity: number = 0.8,
-    type: ThreatType = 'instructionOverride'
-  ): import('./types').CallableVard {
+    type: ThreatType = "instructionOverride",
+  ): import("./types").CallableVard {
     const newPattern: Pattern = { regex, severity, type };
     const newBuilder = new VardBuilder({
       ...this.config,
@@ -207,7 +207,7 @@ export class VardBuilder {
    *
    * @see {@link pattern} to add a single pattern
    */
-  patterns(patterns: Pattern[]): import('./types').CallableVard {
+  patterns(patterns: Pattern[]): import("./types").CallableVard {
     const newBuilder = new VardBuilder({
       ...this.config,
       customPatterns: [...this.config.customPatterns, ...patterns],
@@ -247,7 +247,7 @@ export class VardBuilder {
    * @remarks
    * Default max length is 100,000 characters if not specified.
    */
-  maxLength(length: number): import('./types').CallableVard {
+  maxLength(length: number): import("./types").CallableVard {
     const newBuilder = new VardBuilder({
       ...this.config,
       maxLength: length,
@@ -300,7 +300,7 @@ export class VardBuilder {
    * @see {@link vard.moderate} for preset with 0.7 threshold
    * @see {@link vard.lenient} for preset with 0.85 threshold
    */
-  threshold(value: number): import('./types').CallableVard {
+  threshold(value: number): import("./types").CallableVard {
     const newBuilder = new VardBuilder({
       ...this.config,
       threshold: Math.max(0, Math.min(1, value)),
@@ -313,8 +313,8 @@ export class VardBuilder {
    */
   private setThreatAction(
     threat: ThreatType,
-    action: ThreatAction
-  ): import('./types').CallableVard {
+    action: ThreatAction,
+  ): import("./types").CallableVard {
     const newBuilder = new VardBuilder({
       ...this.config,
       threatActions: {
@@ -362,8 +362,8 @@ export class VardBuilder {
    * @see {@link warn} to log but allow threats (silent in v1.0)
    * @see {@link allow} to ignore threats completely
    */
-  block(threat: ThreatType): import('./types').CallableVard {
-    return this.setThreatAction(threat, 'block');
+  block(threat: ThreatType): import("./types").CallableVard {
+    return this.setThreatAction(threat, "block");
   }
 
   /**
@@ -410,8 +410,8 @@ export class VardBuilder {
    * @see {@link warn} to log but allow threats
    * @see {@link allow} to ignore threats
    */
-  sanitize(threat: ThreatType): import('./types').CallableVard {
-    return this.setThreatAction(threat, 'sanitize');
+  sanitize(threat: ThreatType): import("./types").CallableVard {
+    return this.setThreatAction(threat, "sanitize");
   }
 
   /**
@@ -457,8 +457,8 @@ export class VardBuilder {
    * @see {@link sanitize} to remove threats from input
    * @see {@link allow} to ignore threats completely
    */
-  warn(threat: ThreatType): import('./types').CallableVard {
-    return this.setThreatAction(threat, 'warn');
+  warn(threat: ThreatType): import("./types").CallableVard {
+    return this.setThreatAction(threat, "warn");
   }
 
   /**
@@ -504,8 +504,8 @@ export class VardBuilder {
    * @see {@link sanitize} to remove threats from input
    * @see {@link warn} to monitor threats without blocking
    */
-  allow(threat: ThreatType): import('./types').CallableVard {
-    return this.setThreatAction(threat, 'allow');
+  allow(threat: ThreatType): import("./types").CallableVard {
+    return this.setThreatAction(threat, "allow");
   }
 
   /**
@@ -565,13 +565,13 @@ export class VardBuilder {
    */
   parse(input: string): string {
     // Type check
-    if (typeof input !== 'string') {
-      throw new TypeError('Input must be a string');
+    if (typeof input !== "string") {
+      throw new TypeError("Input must be a string");
     }
 
     // Handle empty/whitespace
-    if (input.trim() === '') {
-      return '';
+    if (input.trim() === "") {
+      return "";
     }
 
     // Check length
@@ -590,7 +590,7 @@ export class VardBuilder {
     if (this.config.customDelimiters.length > 0) {
       const delimiterThreats = detectCustomDelimiters(
         input,
-        this.config.customDelimiters
+        this.config.customDelimiters,
       );
       threats = [...threats, ...delimiterThreats];
     }
@@ -728,16 +728,16 @@ export class VardBuilder {
       const action = this.config.threatActions[threat.type];
 
       switch (action) {
-        case 'block':
+        case "block":
           toBlock.push(threat);
           break;
-        case 'sanitize':
+        case "sanitize":
           toSanitize.push(threat);
           break;
-        case 'warn':
+        case "warn":
           toWarn.push(threat);
           break;
-        case 'allow':
+        case "allow":
           // Do nothing
           break;
       }

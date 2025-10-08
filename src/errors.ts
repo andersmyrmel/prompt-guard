@@ -1,4 +1,4 @@
-import type { Threat } from './types';
+import type { Threat } from "./types";
 
 /**
  * Error thrown when prompt injection attacks are detected in user input.
@@ -81,8 +81,8 @@ export class PromptInjectionError extends Error {
    * @param threats - Array of detected threats (must not be empty)
    */
   constructor(threats: Threat[]) {
-    super('Invalid input detected');
-    this.name = 'PromptInjectionError';
+    super("Invalid input detected");
+    this.name = "PromptInjectionError";
     this.threats = threats;
 
     // Maintains proper stack trace for where our error was thrown (only available on V8)
@@ -116,10 +116,10 @@ export class PromptInjectionError extends Error {
    *
    * @see {@link getDebugInfo} for detailed threat information (server-side only)
    */
-  getUserMessage(locale: 'en' | 'no' = 'en'): string {
-    return locale === 'no'
-      ? 'Ugyldig innhold oppdaget. Vennligst prøv igjen.'
-      : 'Invalid input detected. Please try again.';
+  getUserMessage(locale: "en" | "no" = "en"): string {
+    return locale === "no"
+      ? "Ugyldig innhold oppdaget. Vennligst prøv igjen."
+      : "Invalid input detected. Please try again.";
   }
 
   /**
@@ -167,9 +167,9 @@ export class PromptInjectionError extends Error {
     const threatList = this.threats
       .map(
         (t) =>
-          `- ${t.type} (severity: ${t.severity.toFixed(2)}, match: "${t.match.substring(0, 30)}${t.match.length > 30 ? '...' : ''}", position: ${t.position})`
+          `- ${t.type} (severity: ${t.severity.toFixed(2)}, match: "${t.match.substring(0, 30)}${t.match.length > 30 ? "..." : ""}", position: ${t.position})`,
       )
-      .join('\n');
+      .join("\n");
 
     return `Threats detected:\n${threatList}`;
   }
