@@ -21,6 +21,7 @@
 - [Real-World Example: RAG Chat](#real-world-example-rag-chat)
 - [Usage](#usage)
   - [Zero Config](#zero-config)
+  - [Brevity (Short Alias)](#brevity-short-alias)
   - [Safe Parse](#safe-parse-no-exceptions)
   - [Presets](#presets)
   - [Chainable Configuration](#chainable-configuration)
@@ -164,6 +165,16 @@ try {
 } catch (error) {
   console.error("Invalid input detected");
 }
+```
+
+### Brevity (Short Alias)
+
+```typescript
+import { v } from "vard";
+
+// For power users who prefer brevity
+const safe = v(userInput);
+const chatVard = v.moderate().delimiters(["CONTEXT:"]);
 ```
 
 ### Safe Parse (no exceptions)
