@@ -2,10 +2,10 @@
 
 > Lightweight prompt injection detection for LLM applications. Zod-inspired chainable API for prompt security.
 
-[![npm version](https://img.shields.io/npm/v/@andersmyrmel/vard.svg)](https://www.npmjs.com/package/@andersmyrmel/vard)
-[![npm downloads](https://img.shields.io/npm/dm/@andersmyrmel/vard.svg)](https://www.npmjs.com/package/@andersmyrmel/vard)
-[![bundle size](https://img.shields.io/bundlephobia/minzip/@andersmyrmel/vard)](https://bundlephobia.com/package/@andersmyrmel/vard)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![test](https://github.com/andersmyrmel/vard/actions/workflows/ci.yml/badge.svg?label=tests&logo=vitest&logoColor=white)](https://github.com/andersmyrmel/vard/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![bundle size](https://img.shields.io/bundlephobia/minzip/@andersmyrmel/vard?color=success)](https://bundlephobia.com/package/@andersmyrmel/vard)
+[![npm version](https://img.shields.io/npm/v/@andersmyrmel/vard.svg?color=blue)](https://www.npmjs.com/package/@andersmyrmel/vard)
 
 [**Try it in CodeSandbox →**](https://codesandbox.io/s/github/andersmyrmel/vard/tree/main/playground)
 
