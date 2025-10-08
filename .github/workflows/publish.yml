@@ -17,23 +17,29 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20"
           registry-url: "https://registry.npmjs.org"
+          cache: "pnpm"
 
       - name: Install dependencies
-        run: npm install
+        run: pnpm install --frozen-lockfile
 
       - name: Run tests
-        run: npm run test:run
+        run: pnpm run test:run
 
       - name: Build package
-        run: npm run build
+        run: pnpm run build
 
       - name: Publish to npm
-        run: npm publish --access=public --provenance
+        run: pnpm publish --access=public --provenance --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 # Setup Instructions:
@@ -50,7 +56,7 @@ jobs:
 #    - Value: paste your npm token
 #
 # 3. Create a release to trigger publish:
-#    - Update version: npm version patch (or minor/major)
+#    - Update version: pnpm version patch (or minor/major)
 #    - Push with tags: git push && git push --tags
 #    - Go to GitHub repo → Releases → "Draft a new release"
 #    - Select your tag, add release notes
