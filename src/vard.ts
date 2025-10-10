@@ -362,7 +362,7 @@ export class VardBuilder {
    * ```
    *
    * @see {@link sanitize} to remove threats instead of blocking
-   * @see {@link warn} to log but allow threats (silent in v1.0)
+   * @see {@link warn} to log but allow threats (use with {@link onWarn} callback)
    * @see {@link allow} to ignore threats completely
    */
   block(threat: ThreatType): import("./types").CallableVard {
@@ -421,8 +421,7 @@ export class VardBuilder {
    * Configures the vard to categorize threats for logging without blocking or sanitizing.
    *
    * Useful for monitoring potential threats in production without disrupting users.
-   * **Note**: In v1.0, warnings are silent (threats are categorized but not logged).
-   * Future versions will add a logging callback option.
+   * Use with `.onWarn()` to set a callback that will be invoked for each warning-level threat.
    *
    * @param threat - Type of threat to warn about ('instructionOverride', 'roleManipulation', etc.)
    * @returns New vard instance with warn action configured (immutable)
@@ -432,9 +431,10 @@ export class VardBuilder {
    * ```typescript
    * const monitor = vard()
    *   .warn('instructionOverride')  // Categorize but don't block
+   *   .onWarn((threat) => console.log('Warning:', threat.type))
    *   .block('systemPromptLeak');   // Still block this
    *
-   * // In v1.0, this passes silently (warning is categorized)
+   * // This passes through but invokes the onWarn callback
    * const result = monitor.parse('ignore previous instructions');
    * console.log(result);  // Original input unchanged
    * ```
@@ -453,9 +453,10 @@ export class VardBuilder {
    * ```
    *
    * @remarks
-   * **v1.0 Behavior**: Warnings are categorized internally but not logged or exposed.
-   * Future versions may add: `onWarn?: (threat: Threat) => void` callback option.
+   * Warnings are categorized and passed to the `.onWarn()` callback if configured.
+   * Without a callback, warnings are silently allowed through.
    *
+   * @see {@link onWarn} to set a callback for warning-level threats
    * @see {@link block} to throw errors for threats
    * @see {@link sanitize} to remove threats from input
    * @see {@link allow} to ignore threats completely

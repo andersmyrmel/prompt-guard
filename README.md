@@ -121,7 +121,7 @@ const safeInput = chatVard(userInput);
 | -------------------- | -------------------------------- | ----------------------- | ---------------- |
 | **Latency**          | < 0.5ms                          | ~200ms                  | ~1-5ms           |
 | **Cost**             | Free                             | $0.001-0.01 per request | Free             |
-| **Accuracy**         | 95%+                             | 98%+                    | 70-80%           |
+| **Accuracy**         | 90-95%                           | 98%+                    | 70-80%           |
 | **Customizable**     | ✅ Patterns, thresholds, actions | ❌ Fixed model          | ⚠️ Limited rules |
 | **Offline**          | ✅                               | ❌                      | ✅               |
 | **TypeScript**       | ✅ Full type safety              | ⚠️ Wrapper only         | ❌               |
@@ -765,7 +765,7 @@ A: Pattern-based detection is 1000x faster (<1ms vs ~200ms) and doesn't require 
 A: False positive rate is <1% with default config. You can tune with `threshold`, presets, and threat actions.
 
 **Q: Can attackers bypass this?**
-A: No security is perfect, but this catches 95%+ of known attacks. Use as part of defense-in-depth.
+A: No security is perfect, but this catches 90-95% of known attacks. Use as part of defense-in-depth.
 
 **Q: Does it work with streaming?**
 A: Yes! Validate input before passing to LLM streaming APIs.

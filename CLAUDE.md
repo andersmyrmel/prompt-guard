@@ -104,7 +104,7 @@ The library exports multiple ways to create vard instances:
 6. **Action execution**:
    - **Block**: Throw `PromptInjectionError`
    - **Sanitize**: Remove/clean threat → **re-validate** to catch nested attacks
-   - **Warn**: Categorize but allow (silent in v1.0)
+   - **Warn**: Categorize but allow (use with `onWarn` callback)
    - **Allow**: Ignore completely
 
 ### Threat Types (src/types.ts)

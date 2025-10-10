@@ -41,7 +41,7 @@ export type ThreatType =
  * Each action has different behavior:
  * - **block**: Throw `PromptInjectionError` (validation fails)
  * - **sanitize**: Remove/clean the threat and return sanitized input
- * - **warn**: Categorize threat but allow input to pass (silent in v1.0)
+ * - **warn**: Categorize threat but allow input to pass (use with `onWarn` callback)
  * - **allow**: Completely ignore this threat type
  *
  * Actions only apply to threats with severity >= configured threshold.
