@@ -72,7 +72,7 @@ describe("ReDoS Prevention", () => {
         // Should pass, no threats
       }
       const elapsed = performance.now() - start;
-      expect(elapsed).toBeLessThan(250); // Relaxed threshold for CI + obfuscation patterns
+      expect(elapsed).toBeLessThan(250);
     });
 
     it("should handle pathological regex input", () => {

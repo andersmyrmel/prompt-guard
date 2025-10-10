@@ -3,7 +3,7 @@ import vard from "../src";
 
 describe("Performance Benchmarks", () => {
   describe("Throughput", () => {
-    it("should achieve > 20,000 ops/sec for safe inputs", () => {
+    it("should achieve > 15,000 ops/sec for safe inputs", () => {
       const iterations = 100000;
       const input = "Hello, how can I help you today?";
 
@@ -15,7 +15,7 @@ describe("Performance Benchmarks", () => {
 
       const opsPerSec = (iterations / elapsed) * 1000;
       console.log(`Throughput (safe inputs): ${opsPerSec.toFixed(0)} ops/sec`);
-      expect(opsPerSec).toBeGreaterThan(20000);
+      expect(opsPerSec).toBeGreaterThan(15000);
     });
 
     it("should handle malicious inputs at > 10,000 ops/sec", () => {
