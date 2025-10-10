@@ -4,6 +4,7 @@ import { rolePatterns } from "./role";
 import { delimiterPatterns } from "./delimiter";
 import { leakPatterns } from "./leak";
 import { encodingPatterns } from "./encoding";
+import { obfuscationPatterns } from "./obfuscation";
 
 /**
  * All built-in detection patterns
@@ -14,6 +15,7 @@ export const allPatterns: Pattern[] = [
   ...delimiterPatterns,
   ...leakPatterns,
   ...encodingPatterns,
+  ...obfuscationPatterns,
 ];
 
 /**
@@ -22,15 +24,15 @@ export const allPatterns: Pattern[] = [
 export function getPatternsByType(type: string): Pattern[] {
   switch (type) {
     case "instructionOverride":
-      return instructionPatterns;
+      return [...instructionPatterns, ...obfuscationPatterns];
     case "roleManipulation":
-      return rolePatterns;
+      return [...rolePatterns, ...obfuscationPatterns];
     case "delimiterInjection":
       return delimiterPatterns;
     case "systemPromptLeak":
-      return leakPatterns;
+      return [...leakPatterns, ...obfuscationPatterns];
     case "encoding":
-      return encodingPatterns;
+      return [...encodingPatterns, ...obfuscationPatterns];
     default:
       return [];
   }
@@ -42,4 +44,5 @@ export {
   delimiterPatterns,
   leakPatterns,
   encodingPatterns,
+  obfuscationPatterns,
 };

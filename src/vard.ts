@@ -59,6 +59,8 @@ export class VardBuilder {
       builder.warn(threat);
     callable.allow = (threat: import("./types").ThreatType) =>
       builder.allow(threat);
+    callable.onWarn = (callback: (threat: import("./types").Threat) => void) =>
+      builder.onWarn(callback);
 
     return callable as import("./types").CallableVard;
   }
@@ -245,7 +247,8 @@ export class VardBuilder {
    * ```
    *
    * @remarks
-   * Default max length is 100,000 characters if not specified.
+   * Default max length is 10,000 characters (~2,500 tokens for GPT models).
+   * This prevents DoS attacks and excessive token costs.
    */
   maxLength(length: number): import("./types").CallableVard {
     const newBuilder = new VardBuilder({
@@ -509,6 +512,73 @@ export class VardBuilder {
   }
 
   /**
+   * Sets a callback function to be invoked when warning-level threats are detected.
+   *
+   * Use this to log or monitor threats without blocking user input. The callback
+   * is invoked for each threat with the 'warn' action that meets the threshold.
+   *
+   * @param callback - Function to call for each warning-level threat
+   * @returns New vard instance with callback configured (immutable)
+   *
+   * @example
+   * **Log warnings to console**
+   * ```typescript
+   * const myVard = vard()
+   *   .warn('instructionOverride')
+   *   .onWarn((threat) => {
+   *     console.log(`[SECURITY WARNING] ${threat.type}: ${threat.match}`);
+   *     console.log(`Severity: ${threat.severity}, Position: ${threat.position}`);
+   *   });
+   *
+   * myVard.parse('ignore previous instructions');
+   * // Logs: [SECURITY WARNING] instructionOverride: ignore previous instructions
+   * // Returns: input passes through unchanged
+   * ```
+   *
+   * @example
+   * **Send warnings to monitoring service**
+   * ```typescript
+   * const chatVard = vard()
+   *   .warn('roleManipulation')
+   *   .onWarn(async (threat) => {
+   *     await analytics.track('prompt_injection_warning', {
+   *       type: threat.type,
+   *       severity: threat.severity,
+   *       timestamp: Date.now(),
+   *     });
+   *   });
+   * ```
+   *
+   * @example
+   * **Gradual rollout with monitoring**
+   * ```typescript
+   * // Phase 1: Monitor suspicious patterns without blocking
+   * const phase1Vard = vard()
+   *   .warn('instructionOverride')
+   *   .onWarn((threat) => {
+   *     // Collect data to tune threshold
+   *     logger.info({ threat, userId: currentUser.id });
+   *   });
+   *
+   * // Phase 2: After analysis, switch to blocking
+   * const phase2Vard = vard().block('instructionOverride');
+   * ```
+   *
+   * @remarks
+   * The callback is called synchronously during validation. For expensive operations
+   * (like API calls), consider using a queue or async wrapper to avoid blocking.
+   *
+   * @see {@link warn} to configure threat types for warning
+   */
+  onWarn(callback: (threat: Threat) => void): import("./types").CallableVard {
+    const newBuilder = new VardBuilder({
+      ...this.config,
+      onWarn: callback,
+    });
+    return VardBuilder.createCallable(newBuilder);
+  }
+
+  /**
    * Validates input and returns the safe string.
    *
    * This is the primary validation method. It detects threats, applies configured
@@ -596,11 +666,18 @@ export class VardBuilder {
     }
 
     // Categorize threats by action (block, sanitize, warn, allow) and filter by threshold
-    const { toBlock, toSanitize } = this.categorizeThreats(threats);
+    const { toBlock, toSanitize, toWarn } = this.categorizeThreats(threats);
 
     // If we have threats to block, throw
     if (toBlock.length > 0) {
       throw new PromptInjectionError(toBlock);
+    }
+
+    // Invoke warning callback if configured
+    if (toWarn.length > 0 && this.config.onWarn) {
+      for (const threat of toWarn) {
+        this.config.onWarn(threat);
+      }
     }
 
     // Sanitize threats if configured to do so
@@ -626,9 +703,6 @@ export class VardBuilder {
         throw new PromptInjectionError(recheckBlock);
       }
     }
-
-    // NOTE: Warnings are categorized but not logged in v1.0
-    // Future versions may add a logger callback: onWarn?: (threat: Threat) => void
 
     return result;
   }

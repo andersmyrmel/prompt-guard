@@ -248,6 +248,8 @@ export interface VardConfig {
   customPatterns: Pattern[];
   /** Actions for each threat type (block, sanitize, warn, allow) */
   threatActions: Record<ThreatType, ThreatAction>;
+  /** Optional callback for warning-level threats (called when action is 'warn') */
+  onWarn?: (threat: Threat) => void;
 }
 
 /**
@@ -348,4 +350,6 @@ export type CallableVard = {
   warn(threat: ThreatType): CallableVard;
   /** Configure vard to completely ignore a threat type */
   allow(threat: ThreatType): CallableVard;
+  /** Set callback function to be called when warning-level threats are detected */
+  onWarn(callback: (threat: Threat) => void): CallableVard;
 };

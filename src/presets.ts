@@ -9,7 +9,7 @@ import type { VardConfig } from "./types";
  */
 export const STRICT_PRESET: VardConfig = {
   threshold: 0.5,
-  maxLength: 100000,
+  maxLength: 10000,
   customDelimiters: [],
   customPatterns: [],
   threatActions: {
@@ -26,7 +26,7 @@ export const STRICT_PRESET: VardConfig = {
  */
 export const MODERATE_PRESET: VardConfig = {
   threshold: 0.7,
-  maxLength: 100000,
+  maxLength: 10000,
   customDelimiters: [],
   customPatterns: [],
   threatActions: {
@@ -43,7 +43,7 @@ export const MODERATE_PRESET: VardConfig = {
  */
 export const LENIENT_PRESET: VardConfig = {
   threshold: 0.85,
-  maxLength: 100000,
+  maxLength: 10000,
   customDelimiters: [],
   customPatterns: [],
   threatActions: {

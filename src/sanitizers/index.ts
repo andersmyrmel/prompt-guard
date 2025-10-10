@@ -125,6 +125,9 @@ function sanitizeEncoding(input: string): string {
   // Remove null bytes
   sanitized = sanitized.replace(/\x00+/g, "");
 
+  // Remove zero-width characters
+  sanitized = sanitized.replace(/[\u200B\u200C\u200D\uFEFF]+/g, "");
+
   // Remove unicode directional override characters
   sanitized = sanitized.replace(/[\u202A-\u202E\u2066-\u2069]+/g, "");
 
@@ -150,6 +153,17 @@ function sanitizeEncoding(input: string): string {
   sanitized = sanitized.replace(
     /(?:&#{1,2}[xX]?[0-9A-Fa-f]+;){5,}/g,
     "[ENTITY_REMOVED]",
+  );
+
+  // Remove uncommon Unicode spaces
+  sanitized = sanitized.replace(/[\u2000-\u200A\u202F\u205F]+/g, " ");
+
+  // Remove full-width characters by replacing with ASCII equivalents
+  sanitized = sanitized.replace(/[\uFF21-\uFF3A]/g, (match) =>
+    String.fromCharCode(match.charCodeAt(0) - 0xfee0),
+  );
+  sanitized = sanitized.replace(/[\uFF41-\uFF5A]/g, (match) =>
+    String.fromCharCode(match.charCodeAt(0) - 0xfee0),
   );
 
   return sanitized;
