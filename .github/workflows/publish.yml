@@ -42,23 +42,3 @@ jobs:
         run: pnpm publish --access=public --provenance --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-# Setup Instructions:
-# 1. Create an npm access token:
-#    - Go to https://www.npmjs.com/settings/YOUR_USERNAME/tokens
-#    - Click "Generate New Token" → "Classic Token"
-#    - Select "Automation" type
-#    - Copy the token
-#
-# 2. Add token to GitHub secrets:
-#    - Go to your repo: Settings → Secrets and variables → Actions
-#    - Click "New repository secret"
-#    - Name: NPM_TOKEN
-#    - Value: paste your npm token
-#
-# 3. Create a release to trigger publish:
-#    - Update version: pnpm version patch (or minor/major)
-#    - Push with tags: git push && git push --tags
-#    - Go to GitHub repo → Releases → "Draft a new release"
-#    - Select your tag, add release notes
-#    - Click "Publish release"
-#    - GitHub Actions will automatically build and publish to npm!
