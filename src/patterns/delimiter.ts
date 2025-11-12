@@ -8,7 +8,7 @@ export const delimiterPatterns: Pattern[] = [
   // XML-style tags: <system>, </system>, <user>, <assistant>
   {
     regex:
-      /<\/?(?:system|user|assistant|human|ai|context|instruction|prompt)>/gi,
+      /<\/?(?:system|user|assistant|human|ai|context|instruction|prompt|user_query)>/gi,
     severity: 0.95,
     type: "delimiterInjection",
   },
@@ -36,7 +36,7 @@ export const delimiterPatterns: Pattern[] = [
   // Colon-style: SYSTEM:, USER:, ASSISTANT:
   {
     regex:
-      /\b(?:system|user|assistant|human|ai|context|instruction|prompt)\s*:/gi,
+      /\b(?:system|user|assistant|human|ai|context|instruction|prompt|UserQuery)\s*:/gi,
     severity: 0.7,
     type: "delimiterInjection",
   },
