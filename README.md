@@ -24,7 +24,9 @@
 </p>
 
 <p align="center">
-  <a href="https://codesandbox.io/s/github/andersmyrmel/vard/tree/main/playground"><b>Try it in CodeSandbox →</b></a>
+  <a href="https://vard-playground.vercel.app/"><b>🎮 Try the Interactive Playground →</b></a>
+  <br/>
+  <sub>Built by <a href="https://github.com/brrock">@brrock</a></sub>
 </p>
 
 ---

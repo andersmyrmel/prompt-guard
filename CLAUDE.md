@@ -55,17 +55,17 @@ vard/
 │   │   └── index.ts          # Detection logic (pattern matching)
 │   └── sanitizers/
 │       └── index.ts          # Sanitization logic (iterative cleaning)
-├── tests/
-│   ├── basic.test.ts         # Basic functionality tests
-│   ├── chainable.test.ts     # API chaining tests
-│   ├── attacks.test.ts       # Real-world attack tests
-│   ├── presets.test.ts       # Preset configuration tests
-│   ├── integration.test.ts   # Full integration tests
-│   ├── redos.test.ts         # ReDoS safety tests
-│   └── benchmarks.test.ts    # Performance benchmarks
-├── playground/               # Manual testing/experimentation
-└── dist/                     # Build output (ESM + .d.ts)
+└── tests/
+    ├── basic.test.ts         # Basic functionality tests
+    ├── chainable.test.ts     # API chaining tests
+    ├── attacks.test.ts       # Real-world attack tests
+    ├── presets.test.ts       # Preset configuration tests
+    ├── integration.test.ts   # Full integration tests
+    ├── redos.test.ts         # ReDoS safety tests
+    └── benchmarks.test.ts    # Performance benchmarks
 ```
+
+**Interactive Playground**: https://vard-playground.vercel.app/ (by [@brrock](https://github.com/brrock))
 
 ---
 

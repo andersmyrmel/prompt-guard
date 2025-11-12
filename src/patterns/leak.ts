@@ -74,4 +74,46 @@ export const leakPatterns: Pattern[] = [
     severity: 0.85,
     type: "systemPromptLeak",
   },
+  // "repeat (all) (previous/prior) (messages/conversation)"
+  {
+    regex:
+      /\brepeat\s+(?:all\s+)?(?:the\s+)?(?:previous|prior|earlier|past)\s+(?:messages?|conversations?|inputs?|prompts?|exchanges?)\b/i,
+    severity: 0.9,
+    type: "systemPromptLeak",
+  },
+  // "what did (the) (last/previous/other) user(s) (ask/say)"
+  {
+    regex:
+      /\bwhat\s+did\s+(?:the\s+)?(?:last|previous|prior|other|earlier)\s+(?:users?|persons?|people)\s+(?:ask|say|tell|request|want)\b/i,
+    severity: 0.85,
+    type: "systemPromptLeak",
+  },
+  // "show/display (me) (the) conversation history/log/messages"
+  {
+    regex:
+      /\b(?:show|display)\s+(?:me\s+)?(?:the\s+)?(?:full\s+)?(?:conversation|chat|message|dialogue|earlier)\s+(?:history|log|record|transcript|messages)\b/i,
+    severity: 0.9,
+    type: "systemPromptLeak",
+  },
+  // "display the message/chat transcript"
+  {
+    regex:
+      /\bdisplay\s+(?:the\s+)?(?:message|chat|conversation)\s+(?:transcript|history|log|record)\b/i,
+    severity: 0.9,
+    type: "systemPromptLeak",
+  },
+  // "summarize (everything) (we've) discussed"
+  {
+    regex:
+      /\bsummarize\s+(?:everything|all)\s+(?:we've|we\s+have|that\s+we've|that\s+we\s+have)\s+(?:discussed|talked\s+about|covered)\b/i,
+    severity: 0.8,
+    type: "systemPromptLeak",
+  },
+  // "print (all) (prior/previous) (inputs/messages)"
+  {
+    regex:
+      /\bprint\s+(?:all\s+)?(?:prior|previous|past|earlier)\s+(?:inputs?|messages?|prompts?|conversations?|exchanges?)\b/i,
+    severity: 0.9,
+    type: "systemPromptLeak",
+  },
 ];

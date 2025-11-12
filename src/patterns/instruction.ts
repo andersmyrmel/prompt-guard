@@ -59,4 +59,67 @@ export const instructionPatterns: Pattern[] = [
     severity: 0.75,
     type: "instructionOverride",
   },
+  // "spell backward(s)" - obfuscation technique
+  {
+    regex:
+      /\bspell(?:ed)?\s+(?:(?:it|this|that)\s+)?(?:backwards?|in\s+reverse)\s+(?:and\s+)?(?:execute|run|follow|do|perform|obey)/i,
+    severity: 0.9,
+    type: "instructionOverride",
+  },
+  // "decode (base64/hex/rot13/etc) and (execute/follow/run)"
+  {
+    regex:
+      /\b(?:decode|decrypt|decipher)\s+(?:this\s+|the\s+)?(?:base64|base-64|b64|hex|hexadecimal|rot13|rot-13|binary|unicode)\s+(?:and\s+)?(?:execute|follow|run|do|perform|obey)/i,
+    severity: 0.9,
+    type: "instructionOverride",
+  },
+  // "rot13/base64/hex decode" (reversed order)
+  {
+    regex:
+      /\b(?:base64|base-64|b64|hex|hexadecimal|rot13|rot-13|binary|unicode)\s+(?:decode|decrypt|decipher)\s+(?:and\s+)?(?:execute|follow|run|do|perform|obey)/i,
+    severity: 0.9,
+    type: "instructionOverride",
+  },
+  // "translate from (hex/base64/etc)" - obfuscation
+  {
+    regex:
+      /\btranslate\s+from\s+(?:hex|hexadecimal|base64|base-64|binary|morse|rot13|rot-13)\s+(?:to\s+text\s+)?(?:and\s+)?(?:execute|follow|run|do|perform)?/i,
+    severity: 0.85,
+    type: "instructionOverride",
+  },
+  // "unscramble/rearrange and (execute/follow)"
+  {
+    regex:
+      /\b(?:unscramble|rearrange|reorder|decode)\s+(?:these\s+|the\s+)?(?:letters?|words?|characters?)\s+(?:and\s+)?(?:execute|follow|run|do|perform|obey)/i,
+    severity: 0.85,
+    type: "instructionOverride",
+  },
+  // "do not (say/respond/reply)" + "instead" - negative directive
+  {
+    regex:
+      /\b(?:do\s+not|don't|never)\s+(?:say|respond|reply|answer|tell|refuse|comply|follow)\s+.{1,50}?\binstead\b/i,
+    severity: 0.85,
+    type: "instructionOverride",
+  },
+  // "don't/do not (follow/comply with) (your/the) (rules/guidelines)"
+  {
+    regex:
+      /\b(?:do\s+not|don't)\s+(?:follow|comply\s+with|obey|adhere\s+to)\s+(?:your|the)?\s*(?:rules|guidelines|instructions|constraints|restrictions)\b/i,
+    severity: 0.8,
+    type: "instructionOverride",
+  },
+  // "don't respond with (safety) warnings/filters/checks"
+  {
+    regex:
+      /\b(?:do\s+not|don't)\s+respond\s+with\s+(?:safety\s+)?(?:warnings?|filters?|checks?|restrictions?|limitations?)\b/i,
+    severity: 0.75,
+    type: "instructionOverride",
+  },
+  // "never refuse" / "always (answer/comply)"
+  {
+    regex:
+      /\b(?:never\s+refuse|always\s+(?:answer|comply|obey|respond|follow))\b/i,
+    severity: 0.8,
+    type: "instructionOverride",
+  },
 ];
