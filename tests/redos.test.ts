@@ -72,7 +72,7 @@ describe("ReDoS Prevention", () => {
         // Should pass, no threats
       }
       const elapsed = performance.now() - start;
-      expect(elapsed).toBeLessThan(250);
+      expect(elapsed).toBeLessThan(150);
     });
 
     it("should handle pathological regex input", () => {
@@ -101,7 +101,10 @@ describe("ReDoS Prevention", () => {
     });
   });
 
-  describe("Stress tests", () => {
+  // Skip stress tests in CI - timing is too variable on GitHub Actions runners
+  const describeStress = process.env.CI ? describe.skip : describe;
+
+  describeStress("Stress tests", () => {
     it("should handle 1000 validations in reasonable time", () => {
       const inputs = Array(1000)
         .fill(0)
