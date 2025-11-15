@@ -8,14 +8,14 @@ export const delimiterPatterns: Pattern[] = [
   // XML-style tags: <system>, </system>, <user>, <assistant>
   {
     regex:
-      /<\/?(?:system|user|assistant|human|ai|context|instruction|prompt)>/gi,
+      /<\/?(?:system|user|assistant|human|ai|context|instruction|prompt|user_query)>/gi,
     severity: 0.95,
     type: "delimiterInjection",
   },
-  // Bracket-style markers: [SYSTEM], [USER], [/SYSTEM]
+  // Bracket-style markers: [SYSTEM], [USER], [/SYSTEM], [START], [START OUTPUT]
   {
     regex:
-      /\[\/?\s*(?:system|user|assistant|human|ai|context|instruction|prompt)\s*\]/gi,
+      /\[\/?\s*(?:system|user|assistant|human|ai|context|instruction|prompt|start|stop|begin|end|start\s+output|begin\s+output|output)\s*\]/gi,
     severity: 0.95,
     type: "delimiterInjection",
   },
@@ -33,16 +33,16 @@ export const delimiterPatterns: Pattern[] = [
     severity: 0.8,
     type: "delimiterInjection",
   },
-  // Colon-style: SYSTEM:, USER:, ASSISTANT:
+  // Colon-style: SYSTEM:, USER:, ASSISTANT:, Query:, godmode:, UserQuery:
   {
     regex:
-      /\b(?:system|user|assistant|human|ai|context|instruction|prompt)\s*:/gi,
+      /\b(?:system|user|assistant|human|ai|context|instruction|prompt|UserQuery)\s*:/gi,
     severity: 0.7,
     type: "delimiterInjection",
   },
   // Role indicators in caps: SYSTEM, USER (standalone)
   {
-    regex: /\b(?:SYSTEM|USER|ASSISTANT|HUMAN|AI|CONTEXT|INSTRUCTION|PROMPT)\b/g,
+    regex: /\b(?:SYSTEM|USER|ASSISTANT|HUMAN|AI|CONTEXT|INSTRUCTION|PROMPT)\b/gi,
     severity: 0.65,
     type: "delimiterInjection",
   },
